@@ -1,0 +1,19 @@
+{
+  "name": "fetching",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.9.4",
+    "axios": "^1.6.2"
+  }
+}
