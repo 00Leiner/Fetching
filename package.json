@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@types/node": "^20.9.4",
+    "@types/react-native": "^0.72.7",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
-    "express": "^4.18.2",
     "mongoose": "^8.0.1"
   }
 }
