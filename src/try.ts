@@ -11,29 +11,10 @@ export class Users{
     async readAll(): Promise<User[] | undefined> {
         try {
             const userList = await readAllUsers();
-            console.log(userList)
             return userList;
         } catch (error: any) {
             console.error(`Failed to read all users: ${error.message}`);
-        }
-    }
-
-    async read(userId: string): Promise<any> {
-        try {
-            const user = await readUser(userId);
-            console.log(user)
-            return user
-        } catch (error: any) {
-            console.error(`Failed to read user details: ${error.message}`);
+            return undefined;
         }
     }
 }
-
-async function tryNerror() {
-    const user = new Users();
-
-    //user.read('65622fd76173f67b0bb8a9fa');
-    user.readAll()
-}
-
-tryNerror()

@@ -1,4 +1,8 @@
+export interface User {
+  _id?: string;
+  username?: string;
+  password?: string;
+}
 export interface Users {
-  username: string;
-  password: string;
+  users: User[]; // Assuming there is a User type representing an individual user
 }
