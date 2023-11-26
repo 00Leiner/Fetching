@@ -1,39 +1,71 @@
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
-import { User } from './models/Users';
+import { userModel, usersModel } from './models/Users';
 
 export class Users{
-    //readUser('655eff9f89b8d1c46ff8a6d5')
-    //createUser('leiner2', '123')
-    //updateUser('6562077e91e87b8717aa15d6', 'leiner3', '123')
-    //deleteUser('656221aca948cefdb59a043c')
+    async readAll() {
+        const userList = await readAllUsers();
 
-    // read all list
-    async readAll(): Promise<User[] | undefined> {
-        try {
-            const userList = await readAllUsers();
-            console.log(userList)
-            return userList;
-        } catch (error: any) {
-            console.error(`Failed to read all users: ${error.message}`);
+        if (userList && userList.allUsers) {
+            const allUserDetails = userList.allUsers.map((user: userModel) => {
+                const _id = user._id;
+                const username = user.username;
+                const password = user.password;
+                return { _id, username, password };
+        });
+            return allUserDetails;
+
+        } else {
+            console.error('Failed to fetch user data or no users found.');
         }
     }
 
-    async read(userId: string): Promise<any> {
-        try {
-            const user = await readUser(userId);
-            console.log(user)
-            return user
-        } catch (error: any) {
-            console.error(`Failed to read user details: ${error.message}`);
-        }
+    async read(userId: string) {
+        const response = await readUser(userId);
+        return response
     }
+
+    async create(getUsername: string, getPassword: string){
+        const response = await createUser(getUsername, getPassword);
+        return response
+    }
+
+    async update(getID: string, getUsername: string, getPassword: string){
+        const response = await updateUser(getID, getUsername, getPassword);
+        return response
+    }
+
+    async delete(getID: string){
+        const response = await deleteUser(getID);
+        return response
+    }
+
 }
 
-async function tryNerror() {
+async function approach() {
     const user = new Users();
-
-    //user.read('65622fd76173f67b0bb8a9fa');
-    user.readAll()
+/* 
+    const read = await user.read('65622fd76173f67b0bb8a9fa');
+    console.log(read._id)
+ */
+/* 
+    const readAll = await user.readAll()
+    if (readAll) {
+        console.log('User IDs:', readAll.map((user: userModel) => user._id).join(', '));
+    } else {
+        console.error('Failed to read all users.');
+    }
+ */
+/* 
+    const create = await user.create('leiner4', '123')
+    console.log(create._id)
+ */
+/* 
+    const update = await user.update( '6563acf43975c81bebf4de23', 'leiner4', '123')
+    console.log(update.username)
+    */ 
+/* 
+    const del = await user.delete( '6563abe53975c81bebf4de20')
+     */
 }
 
-tryNerror()
+approach()

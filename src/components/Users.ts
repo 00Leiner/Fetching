@@ -1,61 +1,72 @@
 import { readUserData, createUserData, updateUserData, deleteUserData, readAllUsersData } from '../api/Users';
-import { User, Users } from '../models/Users';
+import { userModel, usersModel } from '../models/Users';
 
 
-export const readAllUsers = async () => {
+export const readAllUsers = async (): Promise<{ allUsers: Array<usersModel> } | any> => {
   try {
     const response = await readAllUsersData();
-    const userList: User[] = response.data.users;
-    //console.log(userList);
-    return userList;
+
+    if (Array.isArray(response.users)) {
+      const allUsers = response.users.map((user: userModel) => ({
+        _id: user._id,
+        username: user.username,
+        password: user.password
+      }));
+
+    return { allUsers };
+
+    } else {
+      console.error('Invalid response format. Expected an array.');
+      return null;
+    }
+
   } catch (error: any) {
     console.error(`Failed to read all users: ${error.message}`);
   }
 }
 
-export const readUser = async (getID: string): Promise<User | undefined> => {
+export const readUser = async (getID: string): Promise<usersModel | any> => {
   try {
-    const user: User = { _id: getID };
-    const response = await readUserData(user);
+    const user: userModel = { _id: getID };
+    const response: usersModel = await readUserData(user);
 
-    if (response.status === 200) {
-      const userData: User = response.data;
-      return userData;
-    } else {
-      console.log(`Failed to read user data. Status: ${response.status}`);
-      return undefined;
-    }
+    const _id = response.user._id;
+    const username = response.user.username;
+    const password = response.user.password;
+
+    return { _id, username, password };
+    
+
 
   } catch (error: any) {
     console.error(`Failed to read user: ${error.message}`);
-    return undefined;
   }
 };
 
-
-
-export const createUser = async (inputUsername: string, inputPassword: string) => {
-  const newUser: User = {
-    username: inputUsername,
-    password: inputPassword,
+export const createUser = async (getUsername: string, getPassword: string) => {
+  const newUser: userModel = {
+    username: getUsername,
+    password: getPassword,
   };
   try {
     const response = await createUserData(newUser);
-    console.log(`User created successfully:`, response.data);
+    console.log(`User created successfully:`, response);
+    return response.user;
   } catch (error: any) {
     console.error(`Failed to delete user: ${error.message}`);
   }
 };
 
-export const updateUser = async (getID: string, inputUsername: string, inputPassword: string) => {
-  const newUser: User = {
+export const updateUser = async (getID: string, getUsername: string, getPassword: string) => {
+  const newUser: userModel = {
     _id: getID,
-    username: inputUsername,
-    password: inputPassword
+    username: getUsername,
+    password: getPassword
   };
   try {
     const response = await updateUserData(newUser);
-    console.log(`User update successfully:`, response.data);
+    console.log(`User update successfully:`, response);
+    return response.users;
 
   } catch (error: any) {
     console.error(`Failed to update user: ${error.message}`);
@@ -63,12 +74,12 @@ export const updateUser = async (getID: string, inputUsername: string, inputPass
 };
 
 export const deleteUser = async (getID: string) => {
-  const newUser: User = {
+  const newUser: userModel = {
     _id: getID
   };
   try {
     const response = await deleteUserData(newUser);
-    console.log(`User deleted:`, response.data);
+    console.log('User Deleted!');
 
   } catch (error: any) {
     console.error(`Failed to delete user: ${error.message}`);
