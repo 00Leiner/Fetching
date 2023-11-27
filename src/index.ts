@@ -252,7 +252,7 @@ async function approach() {
     // //delete room
     // const del = await room.delete( '6564ec8a4701fb0526023e3d')  */
 
- const course = new Courses();
+/*  const course = new Courses();
     
     // //read a single course
     // const read = await course.read('6564f59459a483195f288501');
@@ -276,7 +276,7 @@ async function approach() {
     // console.log(update) 
 
     // //delete course
-    // const del = await course.delete( '6564f59459a483195f288501') 
+    // const del = await course.delete( '6564f59459a483195f288501')  */
     
 
     
