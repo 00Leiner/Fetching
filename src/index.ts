@@ -1,5 +1,7 @@
+import { createRoom, deleteRoom, readAllRooms, readRoom, updateRoom } from './components/Rooms';
 import { createTeacher, deleteTeacher, readAllTeachers, readTeacher, updateTeacher } from './components/Teachers';
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
+import { roomModel } from './models/Rooms';
 import { teacherModel } from './models/Teachers';
 import { userModel, usersModel } from './models/Users';
 
@@ -82,63 +84,133 @@ export class Teachers{
 
 }
 
+export class Rooms{
+    async readAll() {
+        const roomList = await readAllRooms();
 
-async function approach() {
-    // here's how we handle the functions
-    
-/*     const user = new Users();
+        if (roomList && roomList.allRooms) {
+            const allRoomDetails = roomList.allRooms.map((room: roomModel) => {
+                const _id = room._id;
+                const name = room.name;
+                const type = room.type;
+                return { _id, name, type };
+        });
+            return allRoomDetails;
 
-    //read a single user
-    const read = await user.read('65622fd76173f67b0bb8a9fa');
-    console.log(read._id)
-
-    //read all users
-    const readAll = await user.readAll()
-    if (readAll) {
-        //read id
-        console.log('User IDs:', readAll.map((user: userModel) => user._id).join(', ')); //map function is the same function of for loop 
-    } else {
-        console.error('Failed to read all users.');
+        } else {
+            console.error('Failed to fetch room data or no rooms found.');
+        }
     }
 
-    //create user
-    const create = await user.create('leiner4', '123')
-    console.log(create._id)
+    async read(roomId: string) {
+        const response = await readRoom(roomId);
+        return response
+    }
 
-    //update user
-    const update = await user.update( '6563acf43975c81bebf4de23', 'leiner4', '123')
-    console.log(update.username) 
+    async create(getName: string, getType: string){
+        const response = await createRoom(getName, getType);
+        return response
+    }
 
-    //delete user
-    const del = await user.delete( '6563abe53975c81bebf4de20') 
+    async update(getID: string, getName: string, getType: string){
+        const response = await updateRoom(getID, getName, getType);
+        return response
+    }
+
+    async delete(getID: string){
+        const response = await deleteRoom(getID);
+        return response
+    }
+}
+
+
+
+// here's how we handle the functions
+async function approach() {
+    
+/*  const user = new Users();
+
+    // //read a single user
+    // const read = await user.read('65622fd76173f67b0bb8a9fa');
+    // console.log(read._id)
+
+    // //read all users
+    // const readAll = await user.readAll()
+    // if (readAll) {
+    //     //read id
+    //     console.log('User IDs:', readAll.map((user: userModel) => user._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create user
+    // const create = await user.create('leiner4', '123')
+    // console.log(create._id)
+
+    // //update user
+    // const update = await user.update( '6563acf43975c81bebf4de23', 'leiner4', '123')
+    // console.log(update.username) 
+
+    // //delete user
+    // const del = await user.delete( '6563abe53975c81bebf4de20') 
 */
 
-    const teacher = new Teachers();
-/*     
-    //read a single teacher
-    const read = await teacher.read('655e35a67c3c3cca9a957b20');
-    console.log(read) */
-/* 
-    //read all users
-    const readAll = await teacher.readAll()
-    if (readAll) {
-        //read id 
-        console.log('User IDs:', readAll.map((teacher: teacherModel) => teacher._id).join(', ')); //map function is the same function of for loop 
-    } else {
-        console.error('Failed to read all users.');
-    } */
-/* 
-    //create user
-    const create = await teacher.create('teacher2', 'english')
-    console.log(create) */
-/* 
-    //update user
-    const update = await teacher.update( '6564e365bf64d6840d2b62e0', 'leiner2', 'science')
-    console.log(update)  */
+/*  const teacher = new Teachers();
+    
+    // //read a single teacher
+    // const read = await teacher.read('655e35a67c3c3cca9a957b20');
+    // console.log(read)
 
-    //delete user
-    const del = await teacher.delete( '6564e365bf64d6840d2b62e0') 
+    // //read all users
+    // const readAll = await teacher.readAll()
+    // if (readAll) {
+    //     //read id 
+    //     console.log('User IDs:', readAll.map((teacher: teacherModel) => teacher._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
 
+    // //create user
+    // const create = await teacher.create('teacher2', 'english')
+    // console.log(create)
+
+    // //update user
+    // const update = await teacher.update( '6564e365bf64d6840d2b62e0', 'leiner2', 'science')
+    // console.log(update) 
+
+    // //delete user
+    // const del = await teacher.delete( '6564e365bf64d6840d2b62e0') 
+*/
+
+/*  const room = new Rooms();
+    
+    // //read a single teacher
+    // const read = await room.read('655e3853cdba379e4dc7acff');
+    // console.log(read)
+
+    // // read all users
+    // const readAll = await room.readAll()
+    // if (readAll) {
+    //     //read id 
+    //     console.log('User IDs:', readAll.map((room: roomModel) => room._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create user
+    // const create = await room.create('roo3', 'lab')
+    // console.log(create)
+
+    // //update user
+    // const update = await room.update( '6564ec8a4701fb0526023e3d', 'room3', 'lab')
+    // console.log(update) 
+
+    // //delete user
+    // const del = await room.delete( '6564ec8a4701fb0526023e3d')  */
+
+
+
+    
 }
 
 approach()
