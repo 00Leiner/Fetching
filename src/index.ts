@@ -1,9 +1,11 @@
 import { readAllCourses, readCourse, createCourse, updateCourse, deleteCourse } from './components/Courses';
 import { createRoom, deleteRoom, readAllRooms, readRoom, updateRoom } from './components/Rooms';
+import { readAllStudents, readStudent, createStudent, updateStudent, deleteStudent, readAllStudentCourses, readStudentCourse, addStudentCourse, updateStudentCourse, deleteStudentCourses } from './components/Students';
 import { createTeacher, deleteTeacher, readAllTeachers, readTeacher, updateTeacher } from './components/Teachers';
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
 import { courseModel } from './models/Courses';
 import { roomModel } from './models/Rooms';
+import { studentCourseModel, studentCoursesModel, studentModel } from './models/Students';
 import { teacherModel } from './models/Teachers';
 import { userModel, usersModel } from './models/Users';
 
@@ -167,6 +169,117 @@ export class Courses{
     }
 }
 
+export class Students{
+    async readAll() {
+        const studentList = await readAllStudents();
+
+        if (studentList && studentList.allStudents) {
+            const allStudentDetails = studentList.allStudents.map((student: studentModel) => {
+                const _id = student._id;
+                const program = student.program;
+                const year = student.year;
+                const semester = student.semester;
+                const block = student.block;
+                const courses = student.courses;
+
+                return { _id, program, year, semester, block, courses };
+        });
+            return allStudentDetails;
+
+        } else {
+            console.error('Failed to fetch student data or no students found.');
+        }
+    }
+
+    async read(getID: string) {
+        const response = await readStudent(getID);
+        return response
+    }
+
+    async create(
+        getProgram: string, 
+        getYear: string, 
+        getSemester: string, 
+        getBlock: string, 
+        getCourses: studentCourseModel[]
+        ){
+        const response = await createStudent(
+            getProgram, 
+            getYear, 
+            getSemester, 
+            getBlock, 
+            getCourses
+            );
+        return response
+    }
+
+    async update(
+        getID: string, 
+        getProgram: string, 
+        getYear: string, 
+        getSemester: string, 
+        getBlock: string, 
+        getCourses: studentCourseModel[]
+        ){
+        const response = await updateStudent(
+            getID,
+            getProgram, 
+            getYear, 
+            getSemester, 
+            getBlock, 
+            getCourses
+            );
+        return response
+    }
+
+    async delete(getID: string){
+        const response = await deleteStudent(getID);
+        return response
+    }
+
+    async readAllCourses(getID: string) {
+        const courseList = await readAllStudentCourses(getID);
+
+        if (courseList && courseList.allCourses) {
+            const allCourseDetails = courseList.allCourses.map((course: courseModel) => {
+                const _id = course._id;
+                const code = course.code;
+                const description = course.description;
+                const units = course.units;
+                const type = course.type;
+
+                return { _id, code, description, units, type };
+        });
+            return allCourseDetails;
+
+        } else {
+            console.error('Failed to fetch course data or no courses found.');
+        }
+    }
+
+    async readCourse(getStudentID: string, getCourseID: string){
+        const response = await readStudentCourse(getStudentID, getCourseID);
+        return response
+    }
+
+    async addCourse(getStudentID: string, getCode: string, getDescription: string, getUnits: string, getType: string){
+        const response = await addStudentCourse(getStudentID, getCode, getDescription, getUnits, getType);
+        return response
+    }
+
+    async updateCourse(getStudentID: string, getID: string, getCode: string, getDescription: string, getUnits: string, getType: string){
+        const response = await updateStudentCourse(getStudentID, getID, getCode, getDescription, getUnits, getType);
+        return response
+    }
+
+    async deleteCourse(getStudentID: string, getCourseID: string){
+        const response = await deleteStudentCourses(getStudentID, getCourseID);
+        return response
+    }
+}
+
+
+
 
 
 // here's how we handle the functions
@@ -272,12 +385,101 @@ async function approach() {
     // console.log(create)
 
     // //update course
-    // const update = await course.update('6564f59459a483195f288501', 'course 1 update', 'course number 1', '3', 'lab')
-    // console.log(update) 
+    // const update = await course.update('65661e3acdfcd96fb654541d', 'course 1 update', 'course number 1', '3', 'lab')
+    // console.log(update._id) 
 
     // //delete course
     // const del = await course.delete( '6564f59459a483195f288501')  */
     
+    const student = new Students()
+    // //read a single student
+    // const read = await student.read('655e24d5682d5868cb204864' );
+    // console.log(read.courses)
+
+    // // read all student
+    // const readAll = await student.readAll()
+    // if (readAll) {
+    //     //read id 
+    //     console.log('User IDs:', readAll.map((student: studentModel) => student._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create student
+    // const create = await student.create(
+    //     'BSCS',
+    //     '4', 
+    //     '2', 
+    //     'a', 
+    //     [
+    //         {
+    //             code: 'course 1', 
+    //             description: 'course number 1', 
+    //             units: '3', 
+    //             type: 'lab'
+    //         },
+    //         {
+    //             code: 'course 2', 
+    //             description: 'course number 2', 
+    //             units: '3', 
+    //             type: 'lab'
+    //         }
+    //     ]
+    //     )
+    // console.log(create)
+
+    // //update student
+    // const update = await student.update(
+    //     '655e24d5682d5868cb204864',
+    //     'BSCS',
+    //     '1', 
+    //     '2', 
+    //     'A', 
+    //     [
+    //         {
+    //             code: 'course 1', 
+    //             description: 'course number 1', 
+    //             units: '3', 
+    //             type: 'lab'
+    //         },
+    //         {
+    //             code: 'course 2', 
+    //             description: 'course number 2', 
+    //             units: '3', 
+    //             type: 'lab'
+    //         }
+    //     ]
+    //     )
+    // console.log(update)
+
+    // //delete student
+    // const del = await student.delete( '656644f9d1217f791417a63b')  
+
+    // //read a single course
+    // const readCourse = await student.readCourse('655e24d5682d5868cb204864', '656618c9cdfcd96fb65453f3' );
+    // console.log(readCourse)
+
+    // // read all course
+    // const readAllCourses = await student.readAllCourses('655e24d5682d5868cb204864')
+    // if (readAllCourses) {
+    //     //read id 
+    //     console.log('User IDs:', readAllCourses.map((course: courseModel) => course._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create course
+    // const addCourse = await student.addCourse('655e24d5682d5868cb204864','course 2', 'course number 2', '3', 'lab')
+    // console.log(addCourse)
+
+    // //update course
+    // const updateCourse = await student.updateCourse('655e24d5682d5868cb204864', '656618c9cdfcd96fb65453f3', 'course 4', 'course number 4', '3', 'lab')
+    // console.log(updateCourse?._id) 
+
+    // //delete course
+    // const del = await student.deleteCourse( '655e24d5682d5868cb204864', '6565b26dbc544465d954b160')  
+
+
 
     
 }
