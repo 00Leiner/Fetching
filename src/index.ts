@@ -1,10 +1,12 @@
 import { readAllCourses, readCourse, createCourse, updateCourse, deleteCourse } from './components/Courses';
 import { createRoom, deleteRoom, readAllRooms, readRoom, updateRoom } from './components/Rooms';
+import { readAllSchedules, readSchedule, createSchedule, updateSchedule, deleteSchedule, readAllScheduleItems, readScheduleItem, addScheduleItem, updateScheduleItem, deleteScheduleItems } from './components/Schedule';
 import { readAllStudents, readStudent, createStudent, updateStudent, deleteStudent, readAllStudentCourses, readStudentCourse, addStudentCourse, updateStudentCourse, deleteStudentCourses } from './components/Students';
 import { createTeacher, deleteTeacher, readAllTeachers, readTeacher, updateTeacher } from './components/Teachers';
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
 import { courseModel } from './models/Courses';
 import { roomModel } from './models/Rooms';
+import { scheduleModel, scheduleItemModel } from './models/Schedule';
 import { studentCourseModel, studentCoursesModel, studentModel } from './models/Students';
 import { teacherModel } from './models/Teachers';
 import { userModel, usersModel } from './models/Users';
@@ -278,7 +280,117 @@ export class Students{
     }
 }
 
+export class Schedules{
+    async readAll() {
+        const scheduleList = await readAllSchedules();
 
+        if (scheduleList && scheduleList.allSchedules) {
+            const allScheduleDetails = scheduleList.allSchedules.map((schedule: scheduleModel) => {
+                const _id = schedule._id;
+                const program = schedule.program;
+                const year = schedule.year;
+                const semester = schedule.semester;
+                const block = schedule.block;
+                const sched = schedule.sched;
+
+                return { _id, program, year, semester, block, sched };
+        });
+            return allScheduleDetails;
+
+        } else {
+            console.error('Failed to fetch schedule data or no schedules found.');
+        }
+    }
+
+    async read(getID: string) {
+        const response = await readSchedule(getID);
+        return response
+    }
+
+    async create(
+        getProgram: string, 
+        getYear: string, 
+        getSemester: string, 
+        getBlock: string, 
+        getItems: scheduleItemModel[]
+        ){
+        const response = await createSchedule(
+            getProgram, 
+            getYear, 
+            getSemester, 
+            getBlock, 
+            getItems
+            );
+        return response
+    }
+
+    async update(
+        getID: string, 
+        getProgram: string, 
+        getYear: string, 
+        getSemester: string, 
+        getBlock: string, 
+        getItems: scheduleItemModel[]
+        ){
+        const response = await updateSchedule(
+            getID,
+            getProgram, 
+            getYear, 
+            getSemester, 
+            getBlock, 
+            getItems
+            );
+        return response
+    }
+
+    async delete(getID: string){
+        const response = await deleteSchedule(getID);
+        return response
+    }
+
+    async readAllItems(getID: string) {
+        const itemList = await readAllScheduleItems(getID);
+
+        if (itemList && itemList.allItems) {
+            const allItemDetails = itemList.allItems.map((sched: scheduleItemModel) => {
+                const _id = sched._id;
+                const courseCode = sched.courseCode;
+                const courseDescription = sched.courseDescription; 
+                const courseUnit = sched.courseUnit;
+                const day = sched.day;
+                const time = sched.time;
+                const room = sched.room;
+                const instructor = sched.instructor;
+
+                return { _id, courseCode, courseDescription, courseUnit, day, time, room, instructor };
+        });
+            return allItemDetails;
+
+        } else {
+            console.error('Failed to fetch schedule data or no courses found.');
+        }
+    }
+
+    async readItem(getScheduleID: string, getItemID: string){
+        const response = await readScheduleItem(getScheduleID, getItemID);
+        return response
+    }
+
+    async addItem(getScheduleID: string, getCourseCode: string, getCourseDescription: string, getCourseUnits: string, getDay: string, geTime: string, getRoom: string, getInstructor: string){
+        const response = await addScheduleItem(getScheduleID, getCourseCode, getCourseDescription, getCourseUnits, getDay, geTime, getRoom, getInstructor);
+        return response
+    }
+
+    async updateItem(getScheduleID: string, getID: string,  getCourseCode: string, getCourseDescription: string, getCourseUnits: string, getDay: string, geTime: string, getRoom: string, getInstructor: string){
+        const response = await updateScheduleItem(getScheduleID, getID,getCourseCode, getCourseDescription, getCourseUnits, getDay, geTime, getRoom, getInstructor);
+        return response
+    }
+
+    async deleteItem(getScheduleID: string, getItemID: string){
+        const response = await deleteScheduleItems(getScheduleID, getItemID);
+        return response
+    }
+}
 
 
 
@@ -391,7 +503,7 @@ async function approach() {
     // //delete course
     // const del = await course.delete( '6564f59459a483195f288501')  */
     
-    const student = new Students()
+/*  const student = new Students()
     // //read a single student
     // const read = await student.read('655e24d5682d5868cb204864' );
     // console.log(read.courses)
@@ -478,7 +590,122 @@ async function approach() {
 
     // //delete course
     // const del = await student.deleteCourse( '655e24d5682d5868cb204864', '6565b26dbc544465d954b160')  
+ */
 
+    const schedule = new Schedules()
+
+    // //read a single student
+    // const read = await schedule.read('655e3d2a9dd0ed242055f1a2');
+    // console.log(read.sched)
+
+    // // read all student
+    // const readAll = await schedule.readAll()
+    // if (readAll) {
+    //     //read id 
+    //     console.log('User IDs:', readAll.map((sched: scheduleItemModel) => sched._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create student
+    // const create = await schedule.create(
+    //     'BSCS',
+    //     '3', 
+    //     '2', 
+    //     'B', 
+    //     [
+    //         {
+    //             courseCode: 'course 1',
+    //             courseDescription: 'course number 1',
+    //             courseUnit: '3',
+    //             day: 'monday',
+    //             time: '7am-8am', 
+    //             room: 'room1',
+    //             instructor: 'teacher1',
+    //         },
+    //         {
+    //             courseCode: 'course 2',
+    //             courseDescription: 'course number 2',
+    //             courseUnit: '2',
+    //             day: 'tuesday',
+    //             time: '7am-8am', 
+    //             room: 'room2',
+    //             instructor: 'teacher2',
+    //         }
+    //     ]
+    //     )
+    // console.log(create)
+
+    // //update student
+    // const update = await schedule.update(
+    //     '656662e912e4a0ccaaaca0e8',
+    //     'BSCS',
+    //     '3', 
+    //     '2', 
+    //     'B', 
+    //     [
+    //         {
+    //             courseCode: 'course 1',
+    //             courseDescription: 'course number 1',
+    //             courseUnit: '3',
+    //             day: 'monday',
+    //             time: '7am-8am', 
+    //             room: 'room1',
+    //             instructor: 'teacher1',
+    //         },
+    //         {
+    //             courseCode: 'course 2',
+    //             courseDescription: 'course number 2',
+    //             courseUnit: '2',
+    //             day: 'tuesday',
+    //             time: '7am-8am', 
+    //             room: 'room2',
+    //             instructor: 'teacher2',
+    //         }
+    //     ]
+    //     )
+    // console.log(update)
+
+    // //delete student
+    // const del = await schedule.delete( '656662e912e4a0ccaaaca0e8')  
+
+    // //read a single course
+    // const readItem = await schedule.readItem('655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc');
+    // console.log(readItem._id)
+
+    // // read all course
+    // const readAllItems = await schedule.readAllItems('655e3d2a9dd0ed242055f1a2')
+    // if (readAllItems) {
+    //     //read id 
+    //     console.log('User IDs:', readAllItems.map((sched: scheduleItemModel) => sched._id).join(', ')); //map function is the same function of for loop 
+    // } else {
+    //     console.error('Failed to read all users.');
+    // }
+
+    // //create course
+    // const addItem = await schedule.addItem('655e3d2a9dd0ed242055f1a2',
+    //             'course 4',
+    //             'course number 4',
+    //             '2',
+    //             'tuesday',
+    //             '7am-8am', 
+    //             'room2',
+    //             'teacher2')
+    // console.log(addItem)
+
+    // //update course
+    // const updateItem = await schedule.updateItem('655e3d2a9dd0ed242055f1a2', '6566684f09f8d25571395409', 
+    //             'course 4 update',
+    //             'course number 4',
+    //             '2',
+    //             'tuesday',
+    //             '7am-8am', 
+    //             'room2',
+    //             'teacher2')
+    // console.log(updateItem?._id) 
+
+    //delete course
+    const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc')  
 
 
     
