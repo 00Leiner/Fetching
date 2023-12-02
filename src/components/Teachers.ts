@@ -79,7 +79,7 @@ export const deleteTeacher = async (getID: string) => {
   };
   try {
     const response = await deleteTeacherData(newTeacher);
-    console.log('Teacher Deleted!');
+    console.log('Teacher Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete teacher: ${error.message}`);
