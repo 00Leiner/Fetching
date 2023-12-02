@@ -79,7 +79,7 @@ export const deleteRoom = async (getID: string) => {
   };
   try {
     const response = await deleteRoomData(newRoom);
-    console.log('Room Deleted!');
+    console.log('Room Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete room: ${error.message}`);
