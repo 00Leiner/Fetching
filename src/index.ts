@@ -265,7 +265,7 @@ export class Students{
     }
 
     async addCourse(getStudentID: string, getCode: string, getDescription: string, getUnits: string, getType: string){
-        const response = await addStudentCourse(getStudentID, getCode, getDescription, getUnits, getType);
+        const response: any  = await addStudentCourse(getStudentID, getCode, getDescription, getUnits, getType);
         return response
     }
 
@@ -396,39 +396,40 @@ export class Schedules{
 
 // here's how we handle the functions
 async function approach() {
-    
+    //user, teacher, rooms, courses has the same approach
 /*  const user = new Users();
 
     // //read a single user
-    // const read = await user.read('65622fd76173f67b0bb8a9fa');
-    // console.log(read._id)
+    // const read = await user.read('65622fd76173f67b0bb8a9fa');// _id of the user you want to read
+    // console.log(read._id)//id, username, password
 
     // //read all users
     // const readAll = await user.readAll()
     // if (readAll) {
     //     //read id
-    //     console.log('User IDs:', readAll.map((user: userModel) => user._id).join(', ')); //map function is the same function of for loop 
+    //     console.log('User IDs:', readAll.map((user: userModel) => user._id  //_id, code, description, units, type
+    //     ).join(', ')); //map function is the same function of for loop 
     // } else {
     //     console.error('Failed to read all users.');
     // }
 
     // //create user
-    // const create = await user.create('leiner4', '123')
-    // console.log(create._id)
+    // const create = await user.create('leiner4', '123')//username, password
+    // console.log(create._id),// _id, username, password
 
     // //update user
-    // const update = await user.update( '6563acf43975c81bebf4de23', 'leiner4', '123')
-    // console.log(update.username) 
+    // const update = await user.update( '6563acf43975c81bebf4de23', 'leiner4', '123')// _id, username, password
+    // console.log(update.username) // _id, username, password
 
     // //delete user
-    // const del = await user.delete( '6563abe53975c81bebf4de20') 
-*/
+    // const del = await user.delete( '6563abe53975c81bebf4de20') // user id you want to delete
+ */
 
 /*  const teacher = new Teachers();
     
     // //read a single teacher
-    // const read = await teacher.read('655e35a67c3c3cca9a957b20');
-    // console.log(read)
+    // const read = await teacher.read('655e35a67c3c3cca9a957b20');//id
+    // console.log(read)//  _id, name, specialized
 
     // //read all teacher
     // const readAll = await teacher.readAll()
@@ -440,22 +441,22 @@ async function approach() {
     // }
 
     // //create teacher
-    // const create = await teacher.create('teacher2', 'english')
-    // console.log(create)
+    // const create = await teacher.create('teacher2', 'english')//  name, specialized
+    // console.log(create)// _id, name, specialized
 
     // //update teacher
-    // const update = await teacher.update( '6564e365bf64d6840d2b62e0', 'leiner2', 'science')
-    // console.log(update) 
+    // const update = await teacher.update( '6564e365bf64d6840d2b62e0', 'leiner2', 'science')// _id, name, specialized
+    // console.log(update) // _id, name, specialized
 
     // //delete teacher
-    // const del = await teacher.delete( '6564e365bf64d6840d2b62e0') 
+    // const del = await teacher.delete( '6564e365bf64d6840d2b62e0') //id you want to delete
 */
 
 /*  const room = new Rooms();
     
     // //read a single teacher
-    // const read = await room.read('655e3853cdba379e4dc7acff');
-    // console.log(read)
+    // const read = await room.read('655e3853cdba379e4dc7acff'); //_id, name, type
+    // console.log(read)//_id, name, type
 
     // // read all room
     // const readAll = await room.readAll()
@@ -467,21 +468,21 @@ async function approach() {
     // }
 
     // //create room
-    // const create = await room.create('roo3', 'lab')
-    // console.log(create)
+    // const create = await room.create('roo3', 'lab')// name, type
+    // console.log(create)//name, type
 
     // //update room
-    // const update = await room.update( '6564ec8a4701fb0526023e3d', 'room3', 'lab')
-    // console.log(update) 
+    // const update = await room.update( '6564ec8a4701fb0526023e3d', 'room3', 'lab')//_id, name, type
+    // console.log(update)//_id, name, type 
 
     // //delete room
-    // const del = await room.delete( '6564ec8a4701fb0526023e3d')  */
+    // const del = await room.delete( '6564ec8a4701fb0526023e3d') //_id */
 
-/*  const course = new Courses();
+/*  const courses = new Courses();
     
     // //read a single course
-    // const read = await course.read('6564f59459a483195f288501');
-    // console.log(read)
+    // const read = await course.read('6564f59459a483195f288501');//_id
+    // console.log(read)//_id, code, description, units, type
 
     // // read all course
     // const readAll = await course.readAll()
@@ -494,14 +495,14 @@ async function approach() {
 
     // //create course
     // const create = await course.create('course 1', 'course number 1', '3', 'lab')
-    // console.log(create)
+    // console.log(create)//_id, code, description, units, type
 
     // //update course
     // const update = await course.update('65661e3acdfcd96fb654541d', 'course 1 update', 'course number 1', '3', 'lab')
-    // console.log(update._id) 
+    // console.log(update._id) //_id, code, description, units, type
 
     // //delete course
-    // const del = await course.delete( '6564f59459a483195f288501')  */
+    // const del = await course.delete( '6564f59459a483195f288501')//_id  */
     
  /*    const student = new Students()
     // //read a single student
@@ -599,7 +600,7 @@ async function approach() {
     //     '3', //units
     //     'lab'//type
     //     )
-    // console.log(addCourse)//you can get any information inside student's course data you created  (e.g, code, description, units, type )
+    // console.log(addCourse)
 
     // //update course
     // const updateCourse = await student.updateCourse(
@@ -622,12 +623,13 @@ async function approach() {
 
 
 /*     const schedule = new Schedules()
+    // same approach as student
 
-    // //read a single student
-    // const read = await schedule.read('655e3d2a9dd0ed242055f1a2');
-    // console.log(read.sched)
+    // //read a single schedule
+    // const read = await schedule.read('655e3d2a9dd0ed242055f1a2');//schedule id
+    // console.log(read.sched)//program, year, semester, block, sched
 
-    // // read all student
+    // // read all schedule
     // const readAll = await schedule.readAll()
     // if (readAll) {
     //     //read id 
@@ -636,15 +638,15 @@ async function approach() {
     //     console.error('Failed to read all users.');
     // }
 
-    // //create student
+    // //create schedule
     // const create = await schedule.create(
-    //     'BSCS',
-    //     '3', 
-    //     '2', 
-    //     'B', 
+    //     'BSCS',//program
+    //     '3', // year
+    //     '2', //semester
+    //     'B', //block
     //     [
     //         {
-    //             courseCode: 'course 1',
+    //             courseCode: 'course1',
     //             courseDescription: 'course number 1',
     //             courseUnit: '3',
     //             day: 'monday',
@@ -653,7 +655,7 @@ async function approach() {
     //             instructor: 'teacher1',
     //         },
     //         {
-    //             courseCode: 'course 2',
+    //             courseCode: 'course2',
     //             courseDescription: 'course number 2',
     //             courseUnit: '2',
     //             day: 'tuesday',
@@ -663,15 +665,15 @@ async function approach() {
     //         }
     //     ]
     //     )
-    // console.log(create)
+    // console.log(create)//program, year, semester, block, sched
 
-    // //update student
+    // //update schedule
     // const update = await schedule.update(
-    //     '656662e912e4a0ccaaaca0e8',
-    //     'BSCS',
-    //     '3', 
-    //     '2', 
-    //     'B', 
+    //     '656ad2c4fb46bfeb8f5884ca',// schedule id to update
+    //     'BSCS',//program
+    //     '5', // year
+    //     '2', //semester
+    //     'B', //block
     //     [
     //         {
     //             courseCode: 'course 1',
@@ -693,17 +695,20 @@ async function approach() {
     //         }
     //     ]
     //     )
-    // console.log(update)
+    // console.log(update)//program, year, semester, block, sched
 
-    // //delete student
-    // const del = await schedule.delete( '656662e912e4a0ccaaaca0e8')  
+    // //delete schedule
+    // const del = await schedule.delete( '656ad2c4fb46bfeb8f5884ca') // schedule id
 
-    // //read a single course
-    // const readItem = await schedule.readItem('655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc');
-    // console.log(readItem._id)
+    // //read a single schedule
+    // const readItem = await schedule.readItem(
+    //     '655e3d2a9dd0ed242055f1a2', // schedule id 
+    //     'course1'// courseCode
+    //     );
+    // console.log(readItem.courseCode) //courseCode, courseDescription, courseUnit, day, time, room, instructor
 
-    // // read all course
-    // const readAllItems = await schedule.readAllItems('655e3d2a9dd0ed242055f1a2')
+    // // read all schedule
+    // const readAllItems = await schedule.readAllItems('655e3d2a9dd0ed242055f1a2')// schedule id
     // if (readAllItems) {
     //     //read id 
     //     console.log('User IDs:', readAllItems.map((sched: scheduleItemModel) => sched._id).join(', ')); //map function is the same function of for loop 
@@ -711,32 +716,38 @@ async function approach() {
     //     console.error('Failed to read all users.');
     // }
 
-    // //create course
-    // const addItem = await schedule.addItem('655e3d2a9dd0ed242055f1a2',
-    //             'course 4',
-    //             'course number 4',
-    //             '2',
-    //             'tuesday',
-    //             '7am-8am', 
-    //             'room2',
-    //             'teacher2')
+    // //create schedule
+    // const addItem = await schedule.addItem(
+    //             '655e3d2a9dd0ed242055f1a2',//schedule id 
+    //             'course 4',//courseCode
+    //             'course number 4',//courseDescription
+    //             '2',//courseUnit
+    //             'tuesday',//day
+    //             '7am-8am', //time
+    //             'room2',//room
+    //             'teacher2'//instructor
+    //             )
     // console.log(addItem)
 
-    // //update course
-    // const updateItem = await schedule.updateItem('655e3d2a9dd0ed242055f1a2', '6566684f09f8d25571395409', 
-    //             'course 4 update',
-    //             'course number 4',
-    //             '2',
-    //             'tuesday',
-    //             '7am-8am', 
-    //             'room2',
-    //             'teacher2')
-    // console.log(updateItem?._id) 
+    // //update schedule
+    // const updateItem = await schedule.updateItem(
+    //     '655e3d2a9dd0ed242055f1a2', //schedule id
+    //     '656ad86bb86964b6540b1c05', // schedule course id
+    //             'course8',//courseCode
+    //             'course number 4',//courseDescription
+    //             '2',//courseUnit
+    //             'tuesday',//day
+    //             '7am-8am', //time
+    //             'room2',//room
+    //             'teacher2'//instructor
+    //             )
+    // console.log(updateItem?.courseCode) //courseCode, courseDescription, courseUnit, day, time, room, instructor
 
-    // //delete course
-    // const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc')  
 
+    // //delete schedule
+    // const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '656ad7d2bf7649d83ccb93a7')  
  */
+
     
 }
 

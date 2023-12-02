@@ -79,7 +79,7 @@ export const deleteScheduleData = async (scheduleData: scheduleModel): Promise<A
 
 export const readAllItemData = async (scheduleData: scheduleModel): Promise<AxiosResponse<scheduleItemsModel> | any> => {
     const scheduleId = scheduleData._id;
-    const url = `${readDataURL}schedule/${scheduleId}/item`;
+    const url = `${readDataURL}program/block/schedule/${scheduleId}/courses/code`;
     const response: AxiosResponse<scheduleItemsModel> = await axios.get(url);
     
     if (response.status === 200) {
@@ -95,8 +95,8 @@ export const readAllItemData = async (scheduleData: scheduleModel): Promise<Axio
 
 export const readItemData = async (scheduleData: scheduleModel, itemData: scheduleItemModel): Promise<AxiosResponse<scheduleItemModel> | any> => {
     const scheduleId = scheduleData._id
-    const itemId = itemData._id
-    const url = `${readDataURL}schedule/${scheduleId}/item/${itemId}`;
+    const courseCode = itemData.courseCode
+    const url = `${readDataURL}program/block/schedule/${scheduleId}/course/code/${courseCode}`;
     const response: AxiosResponse<scheduleItemsModel> = await axios.get(url);
     
     if (response.status === 200) {
@@ -113,10 +113,10 @@ export const readItemData = async (scheduleData: scheduleModel, itemData: schedu
 export const addItemsData = async (scheduleData: scheduleModel, itemData: scheduleItemModel): Promise<AxiosResponse<scheduleItemModel> | any> => {
     const scheduleId = scheduleData._id
     const url = `${addItemDataURL}${scheduleId}`;
-    const response: AxiosResponse<scheduleItemModel> = await axios.post(url, itemData);
+    const response: AxiosResponse<scheduleItemsModel> = await axios.post(url, itemData);
     
     if (response.status === 200) {
-        return response.data;
+        return response.data.sched;
         
     } else if (response.status === 404) {
         throw new Error(`No Schedule Found`);
@@ -128,7 +128,7 @@ export const addItemsData = async (scheduleData: scheduleModel, itemData: schedu
 export const updateItemData = async (scheduleData: scheduleModel, itemData: scheduleItemModel): Promise<AxiosResponse<scheduleItemsModel> | any> => {
     const scheduleId = scheduleData._id
     const itemId = itemData._id
-    const url = `${updateDataURL}schedule/${scheduleId}/item/${itemId}`;
+    const url = `${updateDataURL}program/block/course/schedule/${scheduleId}/course/code/${itemId}`;
     const response: AxiosResponse<scheduleItemsModel> = await axios.put(url, itemData);
     
     if (response.status === 200) {
@@ -144,7 +144,7 @@ export const updateItemData = async (scheduleData: scheduleModel, itemData: sche
 export const deleteItemData = async (scheduleData: scheduleModel, itemData: scheduleItemModel): Promise<AxiosResponse<scheduleItemsModel> | any> => {
     const scheduleId = scheduleData._id
     const itemId = itemData._id
-    const url = `${deleteDataURL}schedule/${scheduleId}/item/${itemId}`;
+    const url = `${deleteDataURL}program/block/course/schedule/${scheduleId}/course/code/${itemId}`;
     const response: AxiosResponse<scheduleItemsModel> = await axios.delete(url);
     
     if (response.status === 200) {

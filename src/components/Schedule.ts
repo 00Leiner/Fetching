@@ -110,7 +110,7 @@ export const deleteSchedule = async (getID: string) => {
   };
   try {
     const response = await deleteScheduleData(newSchedule);
-    console.log('Schedule Deleted!');
+    console.log('Schedule Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete schedule: ${error.message}`);
@@ -149,8 +149,8 @@ export const readAllScheduleItems = async (getID: string): Promise<Array<schedul
 export const readScheduleItem = async (getScheduleID: string, getItemID: string): Promise<scheduleItemModel | any> => {
   try {
     const schedule: scheduleModel = { _id: getScheduleID };
-    const item: scheduleModel = { _id: getItemID };
-    const response = await readItemData(schedule, item);
+    const course: scheduleItemModel = { courseCode: getItemID };
+    const response = await readItemData(schedule, course);
 
     const _id = response._id;
     const courseCode = response.courseCode;
@@ -181,8 +181,8 @@ export const addScheduleItem = async (getScheduleID: string, getCourseCode: stri
   };
   try {
     const response = await addItemsData(schedule, newItem);
-    console.log(`Schedule item created successfully:`, response);
-    return response.schedule;
+    console.log(`Schedule item created successfully:`, response.sched);
+    return response;
   } catch (error: any) {
     console.error(`Failed to delete schedule: ${error.message}`);
   }
@@ -229,23 +229,13 @@ export const deleteScheduleItems = async (getScheduleID: string,  getItemId: str
     const course: scheduleModel = { _id: getItemId };
   
     try {
-        const response: scheduleItemModel[] = await deleteItemData(schedule, course);
-        
-        if (response.length > 0) {
-          const updatedItem = response.find(sched => sched._id === getItemId);
-          console.log(updatedItem)
-          if (updatedItem) {
-            console.log('Item Deleted!');
-            return updatedItem
-          } else {
-            console.log(`Item not found`);
-          }
-        } else {
-          console.log(`No Item found for the schedule.`);
-        }
+      const response: scheduleItemModel | null = await deleteItemData(schedule, course);
 
-        return response
+      console.log('Course Schedule Deleted!', response);
+      return response;
+      
     } catch (error: any) {
-        console.error(`Failed to read all courses: ${error.message}`);
+      console.error(`Failed to delete course: ${error.message}`);
+      throw error; 
     }
-}
+};
