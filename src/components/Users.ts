@@ -79,7 +79,7 @@ export const deleteUser = async (getID: string) => {
   };
   try {
     const response = await deleteUserData(newUser);
-    console.log('User Deleted!');
+    console.log('User Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete user: ${error.message}`);
