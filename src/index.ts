@@ -578,7 +578,7 @@ async function approach() {
     // //read a single course
     // const readCourse = await student.readCourse(
     //     '656abfb4c8f7d89bbf7748d6', // id of the programblock that has the course's data you want to get the value 
-    //     'course1' // CourseCode of the course
+    //     'course1' // CourseCode of the course you want to read
     //     );
     // console.log(readCourse)//you can get any information inside student's course data you want to get  (e.g, code, description, units, type )
 
