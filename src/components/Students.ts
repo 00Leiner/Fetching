@@ -103,7 +103,7 @@ export const deleteStudent = async (getID: string) => {
   };
   try {
     const response = await deleteStudentData(newStudent);
-    console.log('Student Deleted!');
+    console.log('Student Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete student: ${error.message}`);
@@ -117,7 +117,7 @@ export const readAllStudentCourses = async (getID: string): Promise<Array<studen
 
     if (Array.isArray(response)) {
       const allCourses: studentCourseModel[] = response.map((course: studentCourseModel) => ({
-        _id: course._id,
+        _id: course._id, 
         code: course.code,
         description: course.description,
         units: course.units,
@@ -136,10 +136,10 @@ export const readAllStudentCourses = async (getID: string): Promise<Array<studen
   }
 }
 
-export const readStudentCourse = async (getStudentID: string, getCourseID: string): Promise<studentCourseModel | any> => {
+export const readStudentCourse = async (getStudentID: string, getCourseCourse: string): Promise<studentCourseModel | any> => {
   try {
     const student: studentModel = { _id: getStudentID };
-    const course: studentModel = { _id: getCourseID };
+    const course: studentModel = { _id: getCourseCourse };
     const response = await readCourseData(student, course);
 
     const _id = response.course._id;
@@ -204,29 +204,18 @@ export const updateStudentCourse = async (getStudentID: string, getID: string, g
   }
 };
 
-export const deleteStudentCourses = async (getStudentID: string,  getCourseId: string): Promise<{ courses: Array<studentCoursesModel> } | any> => {
-  
-    const student: studentModel = { _id: getStudentID };
-    const course: studentModel = { _id: getCourseId };
-  
-    try {
-        const response: studentCourseModel[] = await deleteCourseData(student, course);
-        
-        if (response.length > 0) {
-          const updatedCourse = response.find(course => course._id === getCourseId);
+export const deleteStudentCourses = async (getStudentID: string, getCourseId: string): Promise<studentCourseModel | null> => {
+  const student: studentModel = { _id: getStudentID };
+  const course: studentModel = { _id: getCourseId };
 
-          if (updatedCourse) {
-            console.log('Course Deleted!');
-            return updatedCourse
-          } else {
-            console.log(`Course not found`);
-          }
-        } else {
-          console.log(`No courses found for the student.`);
-        }
+  try {
+    const deletedCourse: studentCourseModel | null = await deleteCourseData(student, course);
 
-        return response
-    } catch (error: any) {
-        console.error(`Failed to read all courses: ${error.message}`);
-    }
-}
+    console.log('Course Deleted!', deletedCourse);
+    return deletedCourse;
+    
+  } catch (error: any) {
+    console.error(`Failed to delete course: ${error.message}`);
+    throw error; // Re-throw the error to let the caller handle it
+  }
+};

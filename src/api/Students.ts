@@ -96,8 +96,8 @@ export const readAllCourseData = async (studentData: studentModel): Promise<Axio
 
 export const readCourseData = async (studentData: studentModel, courseData: studentCourseModel): Promise<AxiosResponse<studentsModel> | any> => {
     const studentId = studentData._id
-    const courseId = courseData._id
-    const url = `${readDataURL}student/${studentId}/course/${courseId}`;
+    const courseCode = courseData._id
+    const url = `${readDataURL}student/${studentId}/course/${courseCode}`;
     const response: AxiosResponse<studentsModel> = await axios.get(url);
     
     if (response.status === 200) {

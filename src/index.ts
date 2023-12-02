@@ -259,8 +259,8 @@ export class Students{
         }
     }
 
-    async readCourse(getStudentID: string, getCourseID: string){
-        const response = await readStudentCourse(getStudentID, getCourseID);
+    async readCourse(getStudentID: string, getCourseCode: string){
+        const response = await readStudentCourse(getStudentID, getCourseCode);
         return response
     }
 
@@ -503,13 +503,14 @@ async function approach() {
     // //delete course
     // const del = await course.delete( '6564f59459a483195f288501')  */
     
-/*  const student = new Students()
+ /*    const student = new Students()
     // //read a single student
-    // const read = await student.read('655e24d5682d5868cb204864' );
-    // console.log(read.courses)
+    // const read = await student.read('65683b2f8c072cc2269bdaf9'); //id
+    // console.log(read.courses)//you can get any information inside student's data (e.g, id, program, year, semester, block, courses)
 
     // // read all student
-    // const readAll = await student.readAll()
+    // const readAll = await student.readAll() // can be use in the listing and to get the data of every program block exist on the database
+    // //use this kind of approach to get what you need
     // if (readAll) {
     //     //read id 
     //     console.log('User IDs:', readAll.map((student: studentModel) => student._id).join(', ')); //map function is the same function of for loop 
@@ -519,34 +520,40 @@ async function approach() {
 
     // //create student
     // const create = await student.create(
-    //     'BSCS',
-    //     '4', 
-    //     '2', 
-    //     'a', 
+    //     'BSCS', //program
+    //     '2', // year
+    //     '1', //semester
+    //     'D', //block
     //     [
     //         {
-    //             code: 'course 1', 
+    //             code: 'course1', 
     //             description: 'course number 1', 
     //             units: '3', 
     //             type: 'lab'
     //         },
     //         {
-    //             code: 'course 2', 
+    //             code: 'course2', 
+    //             description: 'course number 2', 
+    //             units: '3', 
+    //             type: 'lab'
+    //         },
+    //         {
+    //             code: 'course3', 
     //             description: 'course number 2', 
     //             units: '3', 
     //             type: 'lab'
     //         }
     //     ]
     //     )
-    // console.log(create)
+    // console.log(create.courses) ////you can get any information inside student's data you've created  (e.g, id, program, year, semester, block, courses)
 
     // //update student
     // const update = await student.update(
-    //     '655e24d5682d5868cb204864',
-    //     'BSCS',
-    //     '1', 
-    //     '2', 
-    //     'A', 
+    //     '65683b2f8c072cc2269bdaf9',// id you want to update
+    //     'BSCS', //program
+    //     '4', // year
+    //     '2', //semester
+    //     'C', //block
     //     [
     //         {
     //             code: 'course 1', 
@@ -562,17 +569,21 @@ async function approach() {
     //         }
     //     ]
     //     )
-    // console.log(update)
+    // console.log(update)//you can get any information inside student's data you updated  (e.g, id, program, year, semester, block, courses)
 
     // //delete student
-    // const del = await student.delete( '656644f9d1217f791417a63b')  
+    // const del = await student.delete( '65683b2f8c072cc2269bdaf9')  // id you want to delete
 
     // //read a single course
-    // const readCourse = await student.readCourse('655e24d5682d5868cb204864', '656618c9cdfcd96fb65453f3' );
-    // console.log(readCourse)
+    // const readCourse = await student.readCourse(
+    //     '656abfb4c8f7d89bbf7748d6', // id of the programblock that has the course's data you want to get the value 
+    //     'course1' // CourseCode of the course
+    //     );
+    // console.log(readCourse)//you can get any information inside student's course data you want to get  (e.g, code, description, units, type )
 
-    // // read all course
-    // const readAllCourses = await student.readAllCourses('655e24d5682d5868cb204864')
+    // read all course
+    // const readAllCourses = await student.readAllCourses('656abfb4c8f7d89bbf7748d6')// the id of the student's courses you want to get
+    // //same approach of read all student data
     // if (readAllCourses) {
     //     //read id 
     //     console.log('User IDs:', readAllCourses.map((course: courseModel) => course._id).join(', ')); //map function is the same function of for loop 
@@ -581,18 +592,36 @@ async function approach() {
     // }
 
     // //create course
-    // const addCourse = await student.addCourse('655e24d5682d5868cb204864','course 2', 'course number 2', '3', 'lab')
-    // console.log(addCourse)
+    // const addCourse = await student.addCourse(
+    //     '656abfb4c8f7d89bbf7748d6', //student id where you want to add course
+    //     'course4', // course code
+    //     'course number 2', // course description
+    //     '3', //units
+    //     'lab'//type
+    //     )
+    // console.log(addCourse)//you can get any information inside student's course data you created  (e.g, code, description, units, type )
 
     // //update course
-    // const updateCourse = await student.updateCourse('655e24d5682d5868cb204864', '656618c9cdfcd96fb65453f3', 'course 4', 'course number 4', '3', 'lab')
-    // console.log(updateCourse?._id) 
+    // const updateCourse = await student.updateCourse(
+    //     '656abfb4c8f7d89bbf7748d6', // student id
+    //     '656ac448fb46bfeb8f588451', // course id
+    //     'course4', //course code
+    //     'course number 4', //course description
+    //     '3', // unit
+    //     'lab'// type
+    //     )
+    // console.log(updateCourse?.code)//you can get any information inside student's course data you want to update  (e.g, code, description, units, type )
+
 
     // //delete course
-    // const del = await student.deleteCourse( '655e24d5682d5868cb204864', '6565b26dbc544465d954b160')  
- */
+    // const del = await student.deleteCourse( 
+    //     '656abfb4c8f7d89bbf7748d6', // student id
+    //     '656ac8abfb46bfeb8f5884a7' //course id
+    //     )   
+    */
 
-    const schedule = new Schedules()
+
+/*     const schedule = new Schedules()
 
     // //read a single student
     // const read = await schedule.read('655e3d2a9dd0ed242055f1a2');
@@ -704,10 +733,10 @@ async function approach() {
     //             'teacher2')
     // console.log(updateItem?._id) 
 
-    //delete course
-    const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc')  
+    // //delete course
+    // const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '655e3f13526556506e24d6fc')  
 
-
+ */
     
 }
 
