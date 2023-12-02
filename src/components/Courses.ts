@@ -87,7 +87,7 @@ export const deleteCourse = async (getID: string) => {
   };
   try {
     const response = await deleteCourseData(newCourse);
-    console.log('Course Deleted!');
+    console.log('Course Deleted!', response);
 
   } catch (error: any) {
     console.error(`Failed to delete course: ${error.message}`);
