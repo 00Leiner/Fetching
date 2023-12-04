@@ -95,7 +95,7 @@ const deleteStudent = (getID) => __awaiter(void 0, void 0, void 0, function* () 
     };
     try {
         const response = yield (0, Students_1.deleteStudentData)(newStudent);
-        console.log('Student Deleted!');
+        console.log('Student Deleted!', response);
     }
     catch (error) {
         console.error(`Failed to delete student: ${error.message}`);
@@ -126,10 +126,10 @@ const readAllStudentCourses = (getID) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.readAllStudentCourses = readAllStudentCourses;
-const readStudentCourse = (getStudentID, getCourseID) => __awaiter(void 0, void 0, void 0, function* () {
+const readStudentCourse = (getStudentID, getCourseCourse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const student = { _id: getStudentID };
-        const course = { _id: getCourseID };
+        const course = { _id: getCourseCourse };
         const response = yield (0, Students_1.readCourseData)(student, course);
         const _id = response.course._id;
         const code = response.course.code;
@@ -195,24 +195,13 @@ const deleteStudentCourses = (getStudentID, getCourseId) => __awaiter(void 0, vo
     const student = { _id: getStudentID };
     const course = { _id: getCourseId };
     try {
-        const response = yield (0, Students_1.deleteCourseData)(student, course);
-        if (response.length > 0) {
-            const updatedCourse = response.find(course => course._id === getCourseId);
-            if (updatedCourse) {
-                console.log('Course Deleted!');
-                return updatedCourse;
-            }
-            else {
-                console.log(`Course not found`);
-            }
-        }
-        else {
-            console.log(`No courses found for the student.`);
-        }
-        return response;
+        const deletedCourse = yield (0, Students_1.deleteCourseData)(student, course);
+        console.log('Course Deleted!', deletedCourse);
+        return deletedCourse;
     }
     catch (error) {
-        console.error(`Failed to read all courses: ${error.message}`);
+        console.error(`Failed to delete course: ${error.message}`);
+        throw error; // Re-throw the error to let the caller handle it
     }
 });
 exports.deleteStudentCourses = deleteStudentCourses;

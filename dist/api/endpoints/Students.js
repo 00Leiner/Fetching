@@ -5,4 +5,4 @@ exports.createData = '/Students/create/';
 exports.readData = '/Students/get/';
 exports.updateData = '/Students/update/';
 exports.deleteData = '/Students/delete/';
-exports.addCourseData = '/Students/add/course/'; //need student id
+exports.addCourseData = '/Students/add/course/';

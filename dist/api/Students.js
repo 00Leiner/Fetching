@@ -107,8 +107,8 @@ const readAllCourseData = (studentData) => __awaiter(void 0, void 0, void 0, fun
 exports.readAllCourseData = readAllCourseData;
 const readCourseData = (studentData, courseData) => __awaiter(void 0, void 0, void 0, function* () {
     const studentId = studentData._id;
-    const courseId = courseData._id;
-    const url = `${readDataURL}student/${studentId}/course/${courseId}`;
+    const courseCode = courseData._id;
+    const url = `${readDataURL}student/${studentId}/course/${courseCode}`;
     const response = yield axios_1.default.get(url);
     if (response.status === 200) {
         return response.data;

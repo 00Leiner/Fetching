@@ -83,7 +83,7 @@ const deleteUser = (getID) => __awaiter(void 0, void 0, void 0, function* () {
     };
     try {
         const response = yield (0, Users_1.deleteUserData)(newUser);
-        console.log('User Deleted!');
+        console.log('User Deleted!', response);
     }
     catch (error) {
         console.error(`Failed to delete user: ${error.message}`);

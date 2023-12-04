@@ -91,7 +91,7 @@ const deleteCourse = (getID) => __awaiter(void 0, void 0, void 0, function* () {
     };
     try {
         const response = yield (0, Courses_1.deleteCourseData)(newCourse);
-        console.log('Course Deleted!');
+        console.log('Course Deleted!', response);
     }
     catch (error) {
         console.error(`Failed to delete course: ${error.message}`);

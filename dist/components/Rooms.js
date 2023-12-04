@@ -83,7 +83,7 @@ const deleteRoom = (getID) => __awaiter(void 0, void 0, void 0, function* () {
     };
     try {
         const response = yield (0, Rooms_1.deleteRoomData)(newRoom);
-        console.log('Room Deleted!');
+        console.log('Room Deleted!', response);
     }
     catch (error) {
         console.error(`Failed to delete room: ${error.message}`);

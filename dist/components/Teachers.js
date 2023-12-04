@@ -83,7 +83,7 @@ const deleteTeacher = (getID) => __awaiter(void 0, void 0, void 0, function* () 
     };
     try {
         const response = yield (0, Teachers_1.deleteTeacherData)(newTeacher);
-        console.log('Teacher Deleted!');
+        console.log('Teacher Deleted!', response);
     }
     catch (error) {
         console.error(`Failed to delete teacher: ${error.message}`);
