@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTeacher = exports.updateTeacher = exports.createTeacher = exports.readTeacher = exports.readAllTeachers = void 0;
+exports.deleteTeacherCourses = exports.updateTeacherCourse = exports.addTeacherCourse = exports.readTeacherCourse = exports.readAllTeacherCourses = exports.deleteTeacher = exports.updateTeacher = exports.createTeacher = exports.readTeacher = exports.readAllTeachers = void 0;
 const Teachers_1 = require("../api/Teachers");
 const readAllTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -90,3 +90,106 @@ const deleteTeacher = (getID) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteTeacher = deleteTeacher;
+const readAllTeacherCourses = (getID) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const teacher = { _id: getID };
+        const response = yield (0, Teachers_1.readAllCourseData)(teacher);
+        if (Array.isArray(response)) {
+            const allCourses = response.map((course) => ({
+                _id: course._id,
+                code: course.code,
+                description: course.description,
+                units: course.units,
+                type: course.type
+            }));
+            return { allCourses };
+        }
+        else {
+            console.error('Invalid response format. Expected an array.');
+            return null;
+        }
+    }
+    catch (error) {
+        console.error(`Failed to read all courses: ${error.message}`);
+    }
+});
+exports.readAllTeacherCourses = readAllTeacherCourses;
+const readTeacherCourse = (getTeacherID, getCourseCourse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const teacher = { _id: getTeacherID };
+        const course = { _id: getCourseCourse };
+        const response = yield (0, Teachers_1.readCourseData)(teacher, course);
+        const _id = response.course._id;
+        const code = response.course.code;
+        const description = response.course.description;
+        const units = response.course.units;
+        const type = response.course.type;
+        return { _id, code, description, units, type };
+    }
+    catch (error) {
+        console.error(`Failed to read all courses: ${error.message}`);
+    }
+});
+exports.readTeacherCourse = readTeacherCourse;
+const addTeacherCourse = (getTeacherID, getCode, getDescription, getUnits, getType) => __awaiter(void 0, void 0, void 0, function* () {
+    const teacher = { _id: getTeacherID };
+    const newCourse = {
+        code: getCode,
+        description: getDescription,
+        units: getUnits,
+        type: getType
+    };
+    try {
+        const response = yield (0, Teachers_1.addCoursesData)(teacher, newCourse);
+        console.log(`Teacher created successfully:`, response);
+        return response.teacher;
+    }
+    catch (error) {
+        console.error(`Failed to delete teacher: ${error.message}`);
+    }
+});
+exports.addTeacherCourse = addTeacherCourse;
+const updateTeacherCourse = (getTeacherID, getID, getCode, getDescription, getUnits, getType) => __awaiter(void 0, void 0, void 0, function* () {
+    const teacher = { _id: getTeacherID };
+    const newCourse = {
+        _id: getID,
+        code: getCode,
+        description: getDescription,
+        units: getUnits,
+        type: getType
+    };
+    try {
+        const response = yield (0, Teachers_1.updateCourseData)(teacher, newCourse);
+        if (response.length > 0) {
+            const updatedCourse = response.find(course => course._id === getID);
+            if (updatedCourse) {
+                console.log(`Course update successfully:`, updatedCourse);
+                return updatedCourse;
+            }
+            else {
+                console.log(`Updated course not found.`);
+            }
+        }
+        else {
+            console.log(`No courses found for the teacher.`);
+        }
+    }
+    catch (error) {
+        console.error(`Failed to update course: ${error.message}`);
+    }
+});
+exports.updateTeacherCourse = updateTeacherCourse;
+const deleteTeacherCourses = (getTeacherID, getCourseId) => __awaiter(void 0, void 0, void 0, function* () {
+    const teacher = { _id: getTeacherID };
+    const course = { _id: getCourseId };
+    try {
+        const deletedCourse = yield (0, Teachers_1.deleteCourseData)(teacher, course);
+        console.log('Course Deleted!', deletedCourse);
+        return deletedCourse;
+    }
+    catch (error) {
+        console.error(`Failed to delete course: ${error.message}`);
+        throw error; // Re-throw the error to let the caller handle it
+    }
+});
+exports.deleteTeacherCourses = deleteTeacherCourses;

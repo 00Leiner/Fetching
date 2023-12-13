@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { createData, readData, updateData, deleteData } from './endpoints/Teachers';
-import { teacherModel, teachersModel } from '../models/Teachers';
+import { createData, readData, updateData, deleteData, addCourseData } from './endpoints/Teachers';
+import { teacherCourseModel, teacherCoursesModel, teacherModel, teachersModel } from '../models/Teachers';
 
 const baseUrl = 'http://localhost:3000';
 
@@ -8,6 +8,7 @@ const readDataURL = `${baseUrl}${readData}`;
 const createDataURL = `${baseUrl}${createData}`;
 const updateDataURL = `${baseUrl}${updateData}`;
 const deleteDataURL = `${baseUrl}${deleteData}`;
+const addCourseDataURL = `${baseUrl}${addCourseData}`;
 
 export const readAllTeachersData = async (): Promise<AxiosResponse<teachersModel> | any> => {
     const response: AxiosResponse<teachersModel> = await axios.get(readDataURL);
@@ -71,6 +72,85 @@ export const deleteTeacherData = async (teacherData: teacherModel): Promise<Axio
     } else if(response.status === 404){
         throw new Error (`Teacher not found: ${response.status}`);
     }else{
+        throw new Error(`Unexpected Status: ${response.status}`);
+    }
+};
+
+export const readAllCourseData = async (teacherData: teacherModel): Promise<AxiosResponse<teacherCoursesModel> | any> => {
+    const teacherId = teacherData._id;
+    const url = `${readDataURL}teacher/${teacherId}/courses`;
+    const response: AxiosResponse<teacherCoursesModel> = await axios.get(url);
+    
+    if (response.status === 200) {
+        // console.log(response.data.courses)
+        return response.data.courses;
+        
+    } else if (response.status === 404) {
+        throw new Error(`No Courses Found`);
+    } else {
+        throw new Error(`Unexpected Status: ${response.status}`);
+    }
+};
+
+export const readCourseData = async (teacherData: teacherModel, courseData: teacherCourseModel): Promise<AxiosResponse<teachersModel> | any> => {
+    const teacherId = teacherData._id
+    const courseCode = courseData._id
+    const url = `${readDataURL}teacher/${teacherId}/course/${courseCode}`;
+    const response: AxiosResponse<teachersModel> = await axios.get(url);
+    
+    if (response.status === 200) {
+        return response.data;
+        
+    } else if (response.status === 404) {
+        throw new Error(`No Teacher Found`);
+    } else {
+        throw new Error(`Unexpected Status: ${response.status}`);
+    }
+};
+
+export const addCoursesData = async (teacherData: teacherModel, courseData: teacherCourseModel): Promise<AxiosResponse<teachersModel> | any> => {
+    const teacherId = teacherData._id
+    const url = `${addCourseDataURL}${teacherId}`;
+    const response: AxiosResponse<teacherModel> = await axios.post(url, courseData);
+    
+    if (response.status === 200) {
+        return response.data;
+        
+    } else if (response.status === 404) {
+        throw new Error(`No Student Found`);
+    } else {
+        throw new Error(`Unexpected Status: ${response.status}`);
+    }
+};
+
+export const updateCourseData = async (teacherData: teacherModel, courseData: teacherCourseModel): Promise<AxiosResponse<teacherCoursesModel> | any> => {
+    const teacherId = teacherData._id
+    const courseId = courseData._id
+    const url = `${updateDataURL}teacher/${teacherId}/course/${courseId}`;
+    const response: AxiosResponse<teacherCoursesModel> = await axios.put(url, courseData);
+    
+    if (response.status === 200) {
+        return response.data.courses;
+        
+    } else if (response.status === 404) {
+        throw new Error(`No Student Found`);
+    } else {
+        throw new Error(`Unexpected Status: ${response.status}`);
+    }
+};
+
+export const deleteCourseData = async (teacherData: teacherModel, courseData: teacherCourseModel): Promise<AxiosResponse<teacherCoursesModel> | any> => {
+    const teacherId = teacherData._id
+    const courseId = courseData._id
+    const url = `${deleteDataURL}teacher/${teacherId}/course/${courseId}`;
+    const response: AxiosResponse<teacherCoursesModel> = await axios.delete(url);
+    
+    if (response.status === 200) {
+        return response.data.courses;
+        
+    } else if (response.status === 404) {
+        throw new Error(`No Student Found`);
+    } else {
         throw new Error(`Unexpected Status: ${response.status}`);
     }
 };
