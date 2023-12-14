@@ -7,7 +7,7 @@ export interface teacherCourseModel{
   }
 
 export interface teacherCoursesModel{
-    courses?: teacherCourseModel
+    specialized?: teacherCourseModel
   }
 
 export interface teacherModel {

@@ -73,12 +73,12 @@ export class Teachers{
         return response
     }
 
-    async create(getName: string, getSpecialized: string){
+    async create(getName: string, getSpecialized: any){
         const response = await createTeacher(getName, getSpecialized);
         return response
     }
 
-    async update(getID: string, getName: string, getSpecialized: string){
+    async update(getID: string, getName: string, getSpecialized: any){
         const response = await updateTeacher(getID, getName, getSpecialized);
         return response
     }
@@ -425,7 +425,7 @@ async function approach() {
     // const del = await user.delete( '6563abe53975c81bebf4de20') // user id you want to delete
  */
 
-/*  const teacher = new Teachers();
+ /* const teacher = new Teachers();
     
     // //read a single teacher
     // const read = await teacher.read('655e35a67c3c3cca9a957b20');//id
@@ -441,7 +441,17 @@ async function approach() {
     // }
 
     // //create teacher
-    // const create = await teacher.create('teacher2', 'english')//  name, specialized
+    // const create = await teacher.create(
+    //     'Davis', 
+    //     [
+    //         {
+    //             code: "IT 3206",
+    //             description: "Database Management",
+    //             units: "3", 
+    //             type: 'Laboratory'
+    //         }
+    //     ]
+    //     )//  name, specialized
     // console.log(create)// _id, name, specialized
 
     // //update teacher
@@ -450,7 +460,7 @@ async function approach() {
 
     // //delete teacher
     // const del = await teacher.delete( '6564e365bf64d6840d2b62e0') //id you want to delete
-*/
+ */
 
 /*  const room = new Rooms();
     
@@ -504,7 +514,7 @@ async function approach() {
     // //delete course
     // const del = await course.delete( '6564f59459a483195f288501')//_id  */
     
- /*    const student = new Students()
+    const student = new Students()
     // //read a single student
     // const read = await student.read('65683b2f8c072cc2269bdaf9'); //id
     // console.log(read.courses)//you can get any information inside student's data (e.g, id, program, year, semester, block, courses)
@@ -521,28 +531,28 @@ async function approach() {
 
     // //create student
     // const create = await student.create(
-    //     'BSCS', //program
-    //     '2', // year
+    //     'BSIT', //program
+    //     '4', // year
     //     '1', //semester
     //     'D', //block
     //     [
     //         {
-    //             code: 'course1', 
-    //             description: 'course number 1', 
+    //             code: 'CS 2101', 
+    //             description: 'Introduction to Computer Science', 
     //             units: '3', 
-    //             type: 'lab'
+    //             type: 'Lecture'
     //         },
     //         {
-    //             code: 'course2', 
-    //             description: 'course number 2', 
+    //             code: 'IT 3206', 
+    //             description: 'Database Management', 
     //             units: '3', 
-    //             type: 'lab'
+    //             type: 'Laboratory'
     //         },
     //         {
-    //             code: 'course3', 
-    //             description: 'course number 2', 
+    //             code: 'IT 3205', 
+    //             description: 'Web Development', 
     //             units: '3', 
-    //             type: 'lab'
+    //             type: 'Lecture'
     //         }
     //     ]
     //     )
@@ -619,7 +629,7 @@ async function approach() {
     //     '656abfb4c8f7d89bbf7748d6', // student id
     //     '656ac8abfb46bfeb8f5884a7' //course id
     //     )   
-    */
+   
 
 
 /*     const schedule = new Schedules()
