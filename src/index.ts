@@ -514,7 +514,7 @@ async function approach() {
     // //delete course
     // const del = await course.delete( '6564f59459a483195f288501')//_id  */
     
-    const student = new Students()
+  /*   const student = new Students()
     // //read a single student
     // const read = await student.read('65683b2f8c072cc2269bdaf9'); //id
     // console.log(read.courses)//you can get any information inside student's data (e.g, id, program, year, semester, block, courses)
@@ -629,7 +629,7 @@ async function approach() {
     //     '656abfb4c8f7d89bbf7748d6', // student id
     //     '656ac8abfb46bfeb8f5884a7' //course id
     //     )   
-   
+    */
 
 
 /*     const schedule = new Schedules()
