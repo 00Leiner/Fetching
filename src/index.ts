@@ -2,13 +2,13 @@ import { readAllCourses, readCourse, createCourse, updateCourse, deleteCourse } 
 import { createRoom, deleteRoom, readAllRooms, readRoom, updateRoom } from './components/Rooms';
 import { readAllSchedules, readSchedule, createSchedule, updateSchedule, deleteSchedule, readAllScheduleItems, readScheduleItem, addScheduleItem, updateScheduleItem, deleteScheduleItems } from './components/Schedule';
 import { readAllStudents, readStudent, createStudent, updateStudent, deleteStudent, readAllStudentCourses, readStudentCourse, addStudentCourse, updateStudentCourse, deleteStudentCourses } from './components/Students';
-import { createTeacher, deleteTeacher, readAllTeachers, readTeacher, updateTeacher } from './components/Teachers';
+import { addTeacherCourse, createTeacher, deleteTeacher, deleteTeacherCourses, readAllTeacherCourses, readAllTeachers, readTeacher, readTeacherCourse, updateTeacher, updateTeacherCourse } from './components/Teachers';
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
 import { courseModel } from './models/Courses';
 import { roomModel } from './models/Rooms';
 import { scheduleModel, scheduleItemModel } from './models/Schedule';
 import { studentCourseModel, studentCoursesModel, studentModel } from './models/Students';
-import { teacherModel } from './models/Teachers';
+import { teacherCourseModel, teacherModel } from './models/Teachers';
 import { userModel, usersModel } from './models/Users';
 
 export class Users{
@@ -85,6 +85,45 @@ export class Teachers{
 
     async delete(getID: string){
         const response = await deleteTeacher(getID);
+        return response
+    }
+    async readAllCourses(getID: string) {
+        const courseList = await readAllTeacherCourses(getID);
+
+        if (courseList && courseList.allCourses) {
+            const allCourseDetails = courseList.allCourses.map((course: teacherCourseModel) => {
+                const _id = course._id;
+                const code = course.code;
+                const description = course.description;
+                const units = course.units;
+                const type = course.type;
+
+                return { _id, code, description, units, type };
+        });
+            return allCourseDetails;
+
+        } else {
+            console.error('Failed to fetch course data or no courses found.');
+        }
+    }
+
+    async readCourse(getStudentID: string, getCourseCode: string){
+        const response = await readTeacherCourse(getStudentID, getCourseCode);
+        return response
+    }
+
+    async addCourse(getStudentID: string, getCode: string, getDescription: string, getUnits: string, getType: string){
+        const response: any  = await addTeacherCourse(getStudentID, getCode, getDescription, getUnits, getType);
+        return response
+    }
+
+    async updateCourse(getStudentID: string, getID: string, getCode: string, getDescription: string, getUnits: string, getType: string){
+        const response = await updateTeacherCourse(getStudentID, getID, getCode, getDescription, getUnits, getType);
+        return response
+    }
+
+    async deleteCourse(getStudentID: string, getCourseID: string){
+        const response = await deleteTeacherCourses(getStudentID, getCourseID);
         return response
     }
 
