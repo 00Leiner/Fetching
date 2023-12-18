@@ -801,3 +801,23 @@ async function approach() {
 }
 
 approach()
+
+
+// Make a GET request to localhost:3000/activate_csp_algorithm
+fetch('http://ec2-3-27-192-58.ap-southeast-2.compute.amazonaws.com:5000/activate_csp_algorithm')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    console.log(response.json())
+    return response.json();
+  })
+  .then(data => {
+    // Process the fetched data
+    console.log('Fetched data:', data);
+
+    // Add your logic to handle the data, update the UI, etc.
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
