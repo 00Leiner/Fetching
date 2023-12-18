@@ -4,7 +4,7 @@ import { createData, readData, updateData, deleteData, addCourseData } from './e
 import { studentCourseModel, studentCoursesModel, studentModel, studentsModel } from '../models/Students';
 import { courseModel } from '../models/Courses';
 
-const baseUrl = 'http://ec2-3-27-192-58.ap-southeast-2.compute.amazonaws.com/:3000';
+const baseUrl = 'http://ec2-3-27-192-58.ap-southeast-2.compute.amazonaws.com:3000';
 
 const readDataURL = `${baseUrl}${readData}`;
 const createDataURL = `${baseUrl}${createData}`;
