@@ -9,9 +9,9 @@ export interface scheduleItemModel{
     instructor?: string,
   }
 
-export interface scheduleItemsModel{
-    sched?: scheduleItemModel
-  }
+export interface allScheduleItemModel{
+  sched?: scheduleItemModel[]
+}
 
 export interface scheduleModel{
   _id?: string,
@@ -22,6 +22,16 @@ export interface scheduleModel{
   sched?: scheduleItemModel;
 };
 
-export interface schedulesModel {
-  schedule?: scheduleModel;
+export interface allScheduleModel{
+  programs?: scheduleModel[];
+}
+
+export interface optionsModel{
+  _id?: string,
+  options?: string,
+  programs?: scheduleModel;
+};
+
+export interface optionModel{
+  options?: optionsModel
 }

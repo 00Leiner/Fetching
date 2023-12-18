@@ -1,12 +1,12 @@
 import { readAllCourses, readCourse, createCourse, updateCourse, deleteCourse } from './components/Courses';
 import { createRoom, deleteRoom, readAllRooms, readRoom, updateRoom } from './components/Rooms';
-import { readAllSchedules, readSchedule, createSchedule, updateSchedule, deleteSchedule, readAllScheduleItems, readScheduleItem, addScheduleItem, updateScheduleItem, deleteScheduleItems } from './components/Schedule';
+import { deleteAllOptions, readAllOptions, readAllProgram, readSingleProgram, readAllSchedule, readSchedule } from './components/Schedule';
 import { readAllStudents, readStudent, createStudent, updateStudent, deleteStudent, readAllStudentCourses, readStudentCourse, addStudentCourse, updateStudentCourse, deleteStudentCourses } from './components/Students';
 import { addTeacherCourse, createTeacher, deleteTeacher, deleteTeacherCourses, readAllTeacherCourses, readAllTeachers, readTeacher, readTeacherCourse, updateTeacher, updateTeacherCourse } from './components/Teachers';
 import { readAllUsers, createUser, updateUser, deleteUser, readUser } from './components/Users'
 import { courseModel } from './models/Courses';
 import { roomModel } from './models/Rooms';
-import { scheduleModel, scheduleItemModel } from './models/Schedule';
+import { scheduleModel, scheduleItemModel, optionsModel } from './models/Schedule';
 import { studentCourseModel, studentCoursesModel, studentModel } from './models/Students';
 import { teacherCourseModel, teacherModel } from './models/Teachers';
 import { userModel, usersModel } from './models/Users';
@@ -126,7 +126,6 @@ export class Teachers{
         const response = await deleteTeacherCourses(getStudentID, getCourseID);
         return response
     }
-
 }
 
 export class Rooms{
@@ -320,81 +319,62 @@ export class Students{
 }
 
 export class Schedules{
-    async readAll() {
-        const scheduleList = await readAllSchedules();
 
-        if (scheduleList && scheduleList.allSchedules) {
-            const allScheduleDetails = scheduleList.allSchedules.map((schedule: scheduleModel) => {
-                const _id = schedule._id;
-                const program = schedule.program;
-                const year = schedule.year;
-                const semester = schedule.semester;
-                const block = schedule.block;
-                const sched = schedule.sched;
+    async deleteAll(){
+        const response = await deleteAllOptions();
+        return response
+    }
 
-                return { _id, program, year, semester, block, sched };
+    async readOptions() {
+        const response = await readAllOptions();
+
+        if (response && response.allResponse) {
+            const allresponseDetails = response.allResponse.map((option: optionsModel) => {
+                const _id = option._id;
+                const options = option.options;
+                const programs = option.programs;
+                return { _id, options, programs };
         });
-            return allScheduleDetails;
+            return allresponseDetails;
 
         } else {
-            console.error('Failed to fetch schedule data or no schedules found.');
+            console.error('Failed to fetch teacher data or no teachers found.');
         }
     }
 
-    async read(getID: string) {
-        const response = await readSchedule(getID);
+    async readAllPrograms(scheduleId: string) {
+        const response = await readAllProgram(scheduleId);
+
+        if (response && response.allResponse) {
+            const allresponseDetails = response.allResponse.map((programs: scheduleModel) => {
+                const _id = programs._id;
+                const program = programs.program;
+                const year = programs.year;
+                const semester = programs.semester;
+                const block = programs.block;
+                const sched = programs.sched;
+                return { _id, program, year, semester, block, sched };
+        });
+            return allresponseDetails;
+
+        } else {
+            console.error('Failed to fetch teacher data or no teachers found.');
+        }
+    }
+
+    async readsingleProgram(scheduleId: string, programId: string ) {
+        const response = await readSingleProgram(scheduleId,programId);
         return response
     }
 
-    async create(
-        getProgram: string, 
-        getYear: string, 
-        getSemester: string, 
-        getBlock: string, 
-        getItems: scheduleItemModel[]
-        ){
-        const response = await createSchedule(
-            getProgram, 
-            getYear, 
-            getSemester, 
-            getBlock, 
-            getItems
-            );
-        return response
-    }
+    async readSchedule(scheduleId: string, programId: string) {
+        const response = await readAllSchedule(scheduleId, programId);
 
-    async update(
-        getID: string, 
-        getProgram: string, 
-        getYear: string, 
-        getSemester: string, 
-        getBlock: string, 
-        getItems: scheduleItemModel[]
-        ){
-        const response = await updateSchedule(
-            getID,
-            getProgram, 
-            getYear, 
-            getSemester, 
-            getBlock, 
-            getItems
-            );
-        return response
-    }
-
-    async delete(getID: string){
-        const response = await deleteSchedule(getID);
-        return response
-    }
-
-    async readAllItems(getID: string) {
-        const itemList = await readAllScheduleItems(getID);
-
-        if (itemList && itemList.allItems) {
-            const allItemDetails = itemList.allItems.map((sched: scheduleItemModel) => {
+        if (response && response.allResponse) {
+            const allresponseDetails = response.allResponse.map((sched: scheduleItemModel) => {
                 const _id = sched._id;
                 const courseCode = sched.courseCode;
-                const courseDescription = sched.courseDescription; 
+                const courseDescription = sched.courseDescription;
                 const courseUnit = sched.courseUnit;
                 const day = sched.day;
                 const time = sched.time;
@@ -403,30 +383,15 @@ export class Schedules{
 
                 return { _id, courseCode, courseDescription, courseUnit, day, time, room, instructor };
         });
-            return allItemDetails;
+            return allresponseDetails;
 
         } else {
-            console.error('Failed to fetch schedule data or no courses found.');
+            console.error('Failed to fetch teacher data or no teachers found.');
         }
     }
 
-    async readItem(getScheduleID: string, getItemID: string){
-        const response = await readScheduleItem(getScheduleID, getItemID);
-        return response
-    }
-
-    async addItem(getScheduleID: string, getCourseCode: string, getCourseDescription: string, getCourseUnits: string, getDay: string, geTime: string, getRoom: string, getInstructor: string){
-        const response = await addScheduleItem(getScheduleID, getCourseCode, getCourseDescription, getCourseUnits, getDay, geTime, getRoom, getInstructor);
-        return response
-    }
-
-    async updateItem(getScheduleID: string, getID: string,  getCourseCode: string, getCourseDescription: string, getCourseUnits: string, getDay: string, geTime: string, getRoom: string, getInstructor: string){
-        const response = await updateScheduleItem(getScheduleID, getID,getCourseCode, getCourseDescription, getCourseUnits, getDay, geTime, getRoom, getInstructor);
-        return response
-    }
-
-    async deleteItem(getScheduleID: string, getItemID: string){
-        const response = await deleteScheduleItems(getScheduleID, getItemID);
+    async readSingleSchedule(scheduleId: string, programId: string, schedId: string) {
+        const response = await readSchedule(scheduleId, programId, schedId);
         return response
     }
 }
@@ -671,153 +636,6 @@ async function approach() {
     */
 
 
-/*     const schedule = new Schedules()
-    // same approach as student
-
-    // //read a single schedule
-    // const read = await schedule.read('655e3d2a9dd0ed242055f1a2');//schedule id
-    // console.log(read.sched)//program, year, semester, block, sched
-
-    // // read all schedule
-    // const readAll = await schedule.readAll()
-    // if (readAll) {
-    //     //read id 
-    //     console.log('User IDs:', readAll.map((sched: scheduleItemModel) => sched._id).join(', ')); //map function is the same function of for loop 
-    // } else {
-    //     console.error('Failed to read all users.');
-    // }
-
-    // //create schedule
-    // const create = await schedule.create(
-    //     'BSCS',//program
-    //     '3', // year
-    //     '2', //semester
-    //     'B', //block
-    //     [
-    //         {
-    //             courseCode: 'course1',
-    //             courseDescription: 'course number 1',
-    //             courseUnit: '3',
-    //             day: 'monday',
-    //             time: '7am-8am', 
-    //             room: 'room1',
-    //             instructor: 'teacher1',
-    //         },
-    //         {
-    //             courseCode: 'course2',
-    //             courseDescription: 'course number 2',
-    //             courseUnit: '2',
-    //             day: 'tuesday',
-    //             time: '7am-8am', 
-    //             room: 'room2',
-    //             instructor: 'teacher2',
-    //         }
-    //     ]
-    //     )
-    // console.log(create)//program, year, semester, block, sched
-
-    // //update schedule
-    // const update = await schedule.update(
-    //     '656ad2c4fb46bfeb8f5884ca',// schedule id to update
-    //     'BSCS',//program
-    //     '5', // year
-    //     '2', //semester
-    //     'B', //block
-    //     [
-    //         {
-    //             courseCode: 'course 1',
-    //             courseDescription: 'course number 1',
-    //             courseUnit: '3',
-    //             day: 'monday',
-    //             time: '7am-8am', 
-    //             room: 'room1',
-    //             instructor: 'teacher1',
-    //         },
-    //         {
-    //             courseCode: 'course 2',
-    //             courseDescription: 'course number 2',
-    //             courseUnit: '2',
-    //             day: 'tuesday',
-    //             time: '7am-8am', 
-    //             room: 'room2',
-    //             instructor: 'teacher2',
-    //         }
-    //     ]
-    //     )
-    // console.log(update)//program, year, semester, block, sched
-
-    // //delete schedule
-    // const del = await schedule.delete( '656ad2c4fb46bfeb8f5884ca') // schedule id
-
-    // //read a single schedule
-    // const readItem = await schedule.readItem(
-    //     '655e3d2a9dd0ed242055f1a2', // schedule id 
-    //     'course1'// courseCode
-    //     );
-    // console.log(readItem.courseCode) //courseCode, courseDescription, courseUnit, day, time, room, instructor
-
-    // // read all schedule
-    // const readAllItems = await schedule.readAllItems('655e3d2a9dd0ed242055f1a2')// schedule id
-    // if (readAllItems) {
-    //     //read id 
-    //     console.log('User IDs:', readAllItems.map((sched: scheduleItemModel) => sched._id).join(', ')); //map function is the same function of for loop 
-    // } else {
-    //     console.error('Failed to read all users.');
-    // }
-
-    // //create schedule
-    // const addItem = await schedule.addItem(
-    //             '655e3d2a9dd0ed242055f1a2',//schedule id 
-    //             'course 4',//courseCode
-    //             'course number 4',//courseDescription
-    //             '2',//courseUnit
-    //             'tuesday',//day
-    //             '7am-8am', //time
-    //             'room2',//room
-    //             'teacher2'//instructor
-    //             )
-    // console.log(addItem)
-
-    // //update schedule
-    // const updateItem = await schedule.updateItem(
-    //     '655e3d2a9dd0ed242055f1a2', //schedule id
-    //     '656ad86bb86964b6540b1c05', // schedule course id
-    //             'course8',//courseCode
-    //             'course number 4',//courseDescription
-    //             '2',//courseUnit
-    //             'tuesday',//day
-    //             '7am-8am', //time
-    //             'room2',//room
-    //             'teacher2'//instructor
-    //             )
-    // console.log(updateItem?.courseCode) //courseCode, courseDescription, courseUnit, day, time, room, instructor
-
-
-    // //delete schedule
-    // const del = await schedule.deleteItem( '655e3d2a9dd0ed242055f1a2', '656ad7d2bf7649d83ccb93a7')  
- */
-
-    
 }
 
 approach()
-
-
-// Make a GET request to localhost:3000/activate_csp_algorithm
-fetch('http://ec2-3-27-192-58.ap-southeast-2.compute.amazonaws.com:5000/activate_csp_algorithm')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    console.log(response.json())
-    return response.json();
-  })
-  .then(data => {
-    // Process the fetched data
-    console.log('Fetched data:', data);
-
-    // Add your logic to handle the data, update the UI, etc.
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
