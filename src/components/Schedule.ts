@@ -1,7 +1,7 @@
 import { 
   deleteAll, readOptions, readAllPrograms, readProgram, readAllSched, readSched
 } from '../api/Schedule';
-import { scheduleModel, scheduleItemModel, optionsModel, optionModel } from '../models/Schedule';
+import { scheduleModel, scheduleItemModel, optionsModel, optionModel, allScheduleModel } from '../models/Schedule';
 
 export const deleteAllOptions = async (): Promise<Array<optionModel> | any> => {
   try {
@@ -36,20 +36,25 @@ export const readAllOptions = async (): Promise<{ allSchedules: Array<optionMode
   }
 }
 
-export const readAllProgram = async (getID: string): Promise<scheduleModel | any> => {
+export const readAllProgram = async (getID: string): Promise<{ allSchedules: Array<scheduleModel> } | any> => {
   try {
-    const schedule: scheduleModel = { _id: getID };
-    const response: scheduleModel = await readAllPrograms(schedule);
+    const schedule: optionsModel = { _id: getID };
+    const response = await readAllPrograms(schedule);
 
-    const _id = response._id;
-    const program = response.program;
-    const year = response.year; //response.schedule.year
-    const semester = response.semester;
-    const block = response.block;
-    const sched = response.sched;
+    if (response && response.schedule.programs) { // Change this line to use 'programs'
+      const allSchedules: scheduleModel[] = response.schedule.programs.map((program: scheduleModel) => ({
+        _id: program._id,
+        program: program.program,
+        year: program.year,
+        semester: program.semester,
+        block: program.block,
+        sched: program.sched
+      }));
 
-    return { _id, program, year, semester, block, sched };
-
+      return { allSchedules };
+    } else {
+      console.error('Invalid response format.');
+    }
   } catch (error: any) {
     console.error(`Failed to read schedule: ${error.message}`);
   }
@@ -79,18 +84,24 @@ export const readAllSchedule = async (getID: string, getProgramID: string ): Pro
   try {
     const scheduleid: scheduleItemModel = { _id: getID };
     const programid: scheduleItemModel = { _id: getProgramID };
-    const response: scheduleItemModel = await readAllSched(scheduleid, programid);
+    const response = await readAllSched(scheduleid, programid);
 
-    const _id = response._id;
-    const courseCode = response.courseCode;
-    const courseDescription = response.courseDescription; //response.schedule.year
-    const courseUnit = response.courseUnit;
-    const day = response.day;
-    const time = response.time;
-    const room = response.room;
-    const instructor = response.instructor;
+    if (response && response.sched) { // Change this line to use 'programs'
+      const allSchedules: scheduleItemModel[] = response.sched.map((program: scheduleItemModel) => ({
+         _id: program._id,
+         courseCode: program.courseCode,
+         courseDescription: program.courseDescription, //response.schedule.year
+         courseUnit: program.courseUnit,
+         day: program.day,
+         time: program.time,
+         room: program.room,
+         instructor: program.instructor,
+      }));
 
-    return { _id, courseCode, courseDescription, courseUnit, day, time, room, instructor };
+      return { allSchedules };
+    } else {
+      console.error('Invalid response format.');
+    }
 
   } catch (error: any) {
     console.error(`Failed to read schedule: ${error.message}`);

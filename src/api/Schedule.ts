@@ -1,7 +1,7 @@
 
 import axios, { AxiosResponse } from 'axios';
 import { deleteAllData, readData, readSchedData } from './endpoints/Schedule';
-import { optionsModel as optionModel, scheduleItemModel, scheduleModel } from '../models/Schedule';
+import { allScheduleModel, optionsModel as optionModel, optionsModel, scheduleItemModel, scheduleModel } from '../models/Schedule';
 
 const baseUrl = 'http://ec2-3-27-192-58.ap-southeast-2.compute.amazonaws.com:3000';
 
@@ -34,18 +34,16 @@ export const readOptions = async (): Promise<AxiosResponse<optionModel> | any> =
     }
 };
 
-export const readAllPrograms = async (scheduleData: optionModel): Promise<AxiosResponse<scheduleModel> | any> => {
-    const id = scheduleData._id
+export const readAllPrograms = async (scheduleData: scheduleModel): Promise<AxiosResponse<allScheduleModel> | any> => {
+    const id = scheduleData._id;
     const url = `${readDataURL}${id}`;
 
-    const response = await axios.get<optionModel>(url);
-
-    if (response.status === 200) {
-        return response.data.options;
-    } else if (response.status === 404) {
-        throw new Error(`No Schedule Found`);
-    } else {
-        throw new Error(`Unexpected Status: ${response.status}`);
+    try {
+        const response = await axios.get<allScheduleModel>(url);
+        return response.data;
+    } catch (error) {
+        console.error('API Request Error:', error);
+        throw error;
     }
 };
 
@@ -55,8 +53,10 @@ export const readProgram = async (scheduleData: optionModel, programData: schedu
     const url = `${readDataURL}${id}/${program}`;
 
     const response = await axios.get<scheduleModel>(url);
+    
 
     if (response.status === 200) {
+        console.log(response.data)
         return response.data;
     } else if (response.status === 404) {
         throw new Error(`No Schedule Found`);
@@ -68,12 +68,12 @@ export const readProgram = async (scheduleData: optionModel, programData: schedu
 export const readAllSched = async (scheduleData: optionModel, programData: scheduleItemModel): Promise<AxiosResponse<scheduleItemModel> | any> => {
     const id = scheduleData._id
     const program = programData._id
-    const url = `${readScheduleData}${id}/${program}`;
+    const url = `${readDataURL}${id}/${program}`;
 
-    const response = await axios.get<scheduleItemModel>(url);
+    const response = await axios.get<scheduleModel>(url);
 
     if (response.status === 200) {
-        return response.data;
+        return response.data.program;
     } else if (response.status === 404) {
         throw new Error(`No Schedule Found`);
     } else {
@@ -87,10 +87,10 @@ export const readSched = async (scheduleData: optionModel, programData: schedule
     const sched = schedData._id
     const url = `${readScheduleData}${id}/${program}/${sched}`;
 
-    const response = await axios.get<scheduleItemModel>(url);
+    const response = await axios.get<scheduleModel>(url);
 
     if (response.status === 200) {
-        return response.data;
+        return response.data.sched;
     } else if (response.status === 404) {
         throw new Error(`No Schedule Found`);
     } else {

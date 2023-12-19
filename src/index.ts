@@ -328,8 +328,8 @@ export class Schedules{
     async readOptions() {
         const response = await readAllOptions();
 
-        if (response && response.allResponse) {
-            const allresponseDetails = response.allResponse.map((option: optionsModel) => {
+        if (response && response.allSchedules) {
+            const allresponseDetails = response.allSchedules.map((option: optionsModel) => {
                 const _id = option._id;
                 const options = option.options;
                 const programs = option.programs;
@@ -338,28 +338,25 @@ export class Schedules{
             return allresponseDetails;
 
         } else {
-            console.error('Failed to fetch teacher data or no teachers found.');
+            console.error('Failed to fetch Options data or no teachers found.');
         }
     }
 
     async readAllPrograms(scheduleId: string) {
         const response = await readAllProgram(scheduleId);
 
-        if (response && response.allResponse) {
-            const allresponseDetails = response.allResponse.map((programs: scheduleModel) => {
-                const _id = programs._id;
-                const program = programs.program;
-                const year = programs.year;
-                const semester = programs.semester;
-                const block = programs.block;
-                const sched = programs.sched;
-                return { _id, program, year, semester, block, sched };
-        });
-            return allresponseDetails;
-
-        } else {
-            console.error('Failed to fetch teacher data or no teachers found.');
-        }
+        if (Array.isArray(response.allSchedules)) {
+            const allSchedules: scheduleModel[] = response.allSchedules.map((programs: scheduleModel) => ({
+              _id: programs._id,
+              program: programs.program,
+              year: programs.year,
+              semester: programs.semester,
+              block: programs.block,
+              sched: programs.sched
+            }));
+          
+            return { allSchedules };
+          }
     }
 
     async readsingleProgram(scheduleId: string, programId: string ) {
@@ -370,8 +367,8 @@ export class Schedules{
     async readSchedule(scheduleId: string, programId: string) {
         const response = await readAllSchedule(scheduleId, programId);
 
-        if (response && response.allResponse) {
-            const allresponseDetails = response.allResponse.map((sched: scheduleItemModel) => {
+        if (response && response.allSchedules) {
+            const allresponseDetails = response.allSchedules.map((sched: scheduleItemModel) => {
                 const _id = sched._id;
                 const courseCode = sched.courseCode;
                 const courseDescription = sched.courseDescription;
@@ -386,7 +383,7 @@ export class Schedules{
             return allresponseDetails;
 
         } else {
-            console.error('Failed to fetch teacher data or no teachers found.');
+            console.error('Failed to fetch schedule data or no schedule found.');
         }
     }
 
@@ -634,7 +631,42 @@ async function approach() {
     //     '656ac8abfb46bfeb8f5884a7' //course id
     //     )   
     */
+    
+    const schedule = new Schedules()
 
+    // const response = await schedule.deleteAll()
+    // console.log(response)
+
+    // const response = await schedule.readOptions()
+    // if (response) {
+    //         //read id
+    //         console.log('User IDs:', response.map((schedule: optionsModel) => schedule._id  //_id, code, description, units, type
+    //         ).join(', ')); //map function is the same function of for loop 
+    //     } else {
+    //         console.error('Failed to read all users.');
+    //     }
+
+    // const response = await schedule.readAllPrograms('6581227ec7827d752239115f'); // options id
+    // if (response && response.allSchedules) {
+    // console.log('Schedule IDs:', response.allSchedules.map((schedule: scheduleModel) => schedule._id).join(', '));
+    // } else {
+    // console.error('Failed to read all schedules.');
+    // }
+
+    // const response = await schedule.readsingleProgram('6581227ec7827d752239115f', '6581227ec7827d7522391175')
+    // console.log(response.program)
+
+    // const response = await schedule.readSchedule('6581227ec7827d752239115f', '6581227ec7827d7522391161')
+    // if (response) {
+    //         //read id
+    //         console.log('User IDs:', response.map((schedule: scheduleItemModel) => schedule.courseCode  //_id, code, description, units, type
+    //         ).join(', ')); //map function is the same function of for loop 
+    //     } else {
+    //         console.error('Failed to read all users.');
+    //     }
+
+    // const response = await schedule.readSingleSchedule('6581227ec7827d752239115f', '6581227ec7827d7522391161', '6581227ec7827d7522391164')
+    // console.log(response.courseCode)
 
 }
 
