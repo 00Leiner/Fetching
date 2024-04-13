@@ -18,6 +18,7 @@ export interface scheduleModel{
   program?: string;
   year?: string;
   semester?: string;
+  major?: string;
   block?: string;
   sched?: scheduleItemModel;
 };

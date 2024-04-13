@@ -47,6 +47,7 @@ export const readAllProgram = async (getID: string): Promise<{ allSchedules: Arr
         program: program.program,
         year: program.year,
         semester: program.semester,
+        major: program.major,
         block: program.block,
         sched: program.sched
       }));
@@ -70,10 +71,11 @@ export const readSingleProgram = async (getID: string, getProgramID: string ): P
     const program = response.program;
     const year = response.year; //response.schedule.year
     const semester = response.semester;
+    const major = response.major;
     const block = response.block;
     const sched = response.sched;
 
-    return { _id, program, year, semester, block, sched };
+    return { _id, program, year, semester, major, block, sched };
 
   } catch (error: any) {
     console.error(`Failed to read schedule: ${error.message}`);

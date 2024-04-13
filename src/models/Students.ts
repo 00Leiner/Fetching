@@ -15,6 +15,7 @@ export interface studentModel{
   program?: string;
   year?: string;
   semester?: string;
+  major?: string;
   block?: string;
   courses?: studentCourseModel;
 };

@@ -12,6 +12,7 @@ export const readAllCurriculums = async (): Promise<{ allCurriculums: Array<curr
         program: curriculum.program,
         year: curriculum.year,
         semester: curriculum.semester,
+        major: curriculum.major,
         curriculum: curriculum.curriculum
       }));
 
@@ -36,9 +37,10 @@ export const readCurriculum = async (getID: string): Promise<curriculumsModel | 
     const program = response.curriculum.program;
     const year = response.curriculum.year;
     const semester = response.curriculum.semester;
+    const major = response.curriculum.major;
     const curriculum = response.curriculum.curriculum
 
-    return { _id, program, year, semester, curriculum };
+    return { _id, program, year, semester, major, curriculum };
     
 
 
@@ -47,11 +49,12 @@ export const readCurriculum = async (getID: string): Promise<curriculumsModel | 
   }
 };
 
-export const createCurriculum = async (getProgram: string, getYear: string, getSemester: string, getCurriculum: any) => {
+export const createCurriculum = async (getProgram: string, getYear: string, getSemester: string, getMajor: string, getCurriculum: any) => {
   const newCurriculum: curriculumModel = {
     program: getProgram,
     year: getYear,
     semester: getSemester,
+    major: getMajor,
     curriculum: getCurriculum,
   };
   try {
@@ -63,12 +66,13 @@ export const createCurriculum = async (getProgram: string, getYear: string, getS
   }
 };
 
-export const updateCurriculum = async (getID: string, getProgram: string, getYear: string, getSemester: string, getCurriculum: any) => {
+export const updateCurriculum = async (getID: string, getProgram: string, getYear: string, getSemester: string, getMajor:string, getCurriculum: any) => {
     const newCurriculum: curriculumModel = {
       _id: getID,
       program: getProgram,
       year: getYear,
       semester: getSemester,
+      major: getMajor,
       curriculum: getCurriculum,
     };
     try {

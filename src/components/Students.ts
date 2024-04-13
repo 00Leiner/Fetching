@@ -12,6 +12,7 @@ export const readAllStudents = async (): Promise<{ allStudents: Array<studentsMo
         program: student.program,
         year: student.year,
         semester: student.semester,
+        major: student.major,
         block: student.block,
         courses: student.courses
       }));
@@ -37,10 +38,11 @@ export const readStudent = async (getID: string): Promise<studentModel | any> =>
     const program = response.program;
     const year = response.year; //response.student.year
     const semester = response.semester;
+    const major = response.major;
     const block = response.block;
     const courses = response.courses;
 
-    return { _id, program, year, semester, block, courses };
+    return { _id, program, year, semester, major, block, courses };
     
 
 
@@ -53,12 +55,14 @@ export const createStudent = async (
   getProgram: string, 
   getYear: string, 
   getSemester: string, 
+  getMajor: string,
   getBlock: string, 
   getCourses: any) => {
   const newStudent: studentModel = {
     program: getProgram,
     year: getYear,
     semester: getSemester,
+    major: getMajor,
     block: getBlock,
     courses: getCourses
   };
@@ -75,8 +79,8 @@ export const updateStudent = async (
   getID: string, 
   getProgram: string, 
   getYear: string, 
-  getSemester: 
-  string, 
+  getSemester: string, 
+  getMajor: string,
   getBlock: string, 
   getCourses: any) => {
   const newStudent: studentModel = {
@@ -84,6 +88,7 @@ export const updateStudent = async (
     program: getProgram,
     year: getYear,
     semester: getSemester,
+    major: getMajor,
     block: getBlock,
     courses: getCourses
   };
